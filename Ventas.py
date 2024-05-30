@@ -6,7 +6,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
         super().__init__()
         self.ventana_login()
-    
+
     #VENTANA Log in
     def ventana_login(self):
         self.frame_login=Frame(self)
@@ -57,53 +57,53 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         lbl3=Label(self.frame_right,text='Aqui Pondremos las busquedas para la ventana')
         lbl3.grid(row=0,column=0,padx=10,pady=10)
-    #Metodo logueo
+
     def logueo(self):
         self.frame_login.pack_forget()#Ocultar la ventana de Login
         self.ventana_menu()#abrir ventana de menu
-    #
+
     def ventana_lista_usuarios(self):
         self.frame_lista_usuarios=Frame(self.frame_center)
         self.frame_lista_usuarios.grid(row=0,column=0,columnspan=2,sticky=NSEW)
 
         self.lblframe_botones_listusu=LabelFrame(self.frame_lista_usuarios)
-        self.lblframe_botones_listusu.grid(row=0,column=0,sticky=NSEW)
+        self.lblframe_botones_listusu.grid(row=0,column=0,padx=10,pady=10,sticky=NSEW)
 
-        btn_nuevo_usuario=ttk.Button(self.lblframe_botones_listusu,text='Nuevo',width=15)
-        btn_nuevo_usuario.grid(row=0,column=0,padx=5,pady=0)
-        btn_modificar_usuario=ttk.Button(self.lblframe_botones_listusu,text='Modificar',width=15)
-        btn_modificar_usuario.grid(row=0,column=1,padx=5,pady=0)
-        btn_eliminar_usuario=ttk.Button(self.lblframe_botones_listusu,text='Eliminar',width=15)
-        btn_eliminar_usuario.grid(row=0,column=2,padx=5,pady=0)
+        btn_nuevo_usuario=tb.Button(self.lblframe_botones_listusu,text='Nuevo',width=15,bootstyle="success")
+        btn_nuevo_usuario.grid(row=0,column=0,padx=5,pady=5)
+        btn_modificar_usuario=tb.Button(self.lblframe_botones_listusu,text='Modificar',width=15,bootstyle="warning")
+        btn_modificar_usuario.grid(row=0,column=1,padx=5,pady=5)
+        btn_eliminar_usuario=tb.Button(self.lblframe_botones_listusu,text='Eliminar',width=15,bootstyle="danger")
+        btn_eliminar_usuario.grid(row=0,column=2,padx=5,pady=5)
 
         self.lblframe_busqueda_listusu=LabelFrame(self.frame_lista_usuarios)
-        self.lblframe_busqueda_listusu.grid(row=1,column=0,sticky=NSEW)
+        self.lblframe_busqueda_listusu.grid(row=1,column=0,padx=10,pady=10,sticky=NSEW)
 
-        txt_busqueda_usuarios=ttk.Entry(self.lblframe_busqueda_listusu,width=50)
+        txt_busqueda_usuarios=ttk.Entry(self.lblframe_busqueda_listusu,width=90)
         txt_busqueda_usuarios.grid(row=0,column=0,padx=5,pady=5)
 
-        #==============================Treeview==================================
+        #====================Treeview=====================================
 
         self.lblframe_tree_listusu=LabelFrame(self.frame_lista_usuarios)
-        self.lblframe_tree_listusu.grid(row=2,column=0,sticky=NSEW)
-
+        self.lblframe_tree_listusu.grid(row=2,column=0,padx=10,pady=10,sticky=NSEW)
+        
         columnas=("codigo","nombre","clave","rol")
 
-        tree_lista_usuarios=ttk.Treeview(self.lblframe_tree_listusu,columns=columnas,height=17,show='headings')
+        tree_lista_usuarios=tb.Treeview(self.lblframe_tree_listusu,columns=columnas,
+                                        height=17,show='headings',bootstyle='dark')
         tree_lista_usuarios.grid(row=0,column=0)
 
         tree_lista_usuarios.heading("codigo",text="Codigo",anchor=W)
         tree_lista_usuarios.heading("nombre",text="Nombre",anchor=W)
         tree_lista_usuarios.heading("clave",text="Clave",anchor=W)
-        tree_lista_usuarios.heading("rol",text="ROL",anchor=W)
-        tree_lista_usuarios['displaycolumns']=("codigo","nombre","rol") #Ocultar barra clave
+        tree_lista_usuarios.heading("rol",text="Rol",anchor=W)
+        tree_lista_usuarios['displaycolumns']=("codigo","nombre","rol") #Ocultar columna clave
 
-        #Crear el scrolbar
-        tree_scroll_listausu=Scrollbar(self.frame_lista_usuarios)
-        tree_scroll_listausu.grid(row=0,column=1)
-        #Configurar El scrollbar
-        tree_scroll_listausu.config(command=tree_lista_usuarios-yview)
-
+        #Crear Scrolbar
+        tree_scroll_listausu=tb.Scrollbar(self.frame_lista_usuarios,bootstyle='round-success')
+        tree_scroll_listausu.grid(row=2,column=1)
+        #configurar scrolbar
+        tree_scroll_listausu.config(command=tree_lista_usuarios.yview)
 
 
 
