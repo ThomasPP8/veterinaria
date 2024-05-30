@@ -1,6 +1,8 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import ttkbootstrap as tb #Acceder estilos de bootstrap
+
+import sqlite3
 
 class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
@@ -89,23 +91,52 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         
         columnas=("codigo","nombre","clave","rol")
 
-        tree_lista_usuarios=tb.Treeview(self.lblframe_tree_listusu,columns=columnas,
+        self.tree_lista_usuarios=tb.Treeview(self.lblframe_tree_listusu,columns=columnas,
                                         height=17,show='headings',bootstyle='dark')
-        tree_lista_usuarios.grid(row=0,column=0)
+        self.tree_lista_usuarios.grid(row=0,column=0)
 
-        tree_lista_usuarios.heading("codigo",text="Codigo",anchor=W)
-        tree_lista_usuarios.heading("nombre",text="Nombre",anchor=W)
-        tree_lista_usuarios.heading("clave",text="Clave",anchor=W)
-        tree_lista_usuarios.heading("rol",text="Rol",anchor=W)
-        tree_lista_usuarios['displaycolumns']=("codigo","nombre","rol") #Ocultar columna clave
+        self.tree_lista_usuarios.heading("codigo",text="Codigo",anchor=W)
+        self.tree_lista_usuarios.heading("nombre",text="Nombre",anchor=W)
+        self.tree_lista_usuarios.heading("clave",text="Clave",anchor=W)
+        self.tree_lista_usuarios.heading("rol",text="Rol",anchor=W)
+        self.tree_lista_usuarios['displaycolumns']=("codigo","nombre","rol") #Ocultar columna clave
 
         #Crear Scrolbar
         tree_scroll_listausu=tb.Scrollbar(self.frame_lista_usuarios,bootstyle='round-success')
         tree_scroll_listausu.grid(row=2,column=1)
         #configurar scrolbar
-        tree_scroll_listausu.config(command=tree_lista_usuarios.yview)
+        tree_scroll_listausu.config(command=self.tree_lista_usuarios.yview)
 
+        #Llamamos a nuestra funcion mostrar usuarios
+        self.mostrar_usuarios()
 
+    def mostrar_usuarios(self):
+        #Capturador errores
+        try:
+            #Establecer la conexion
+            miConexion=sqlite3.connect('Ventas.db')
+            #Crear Cursor
+            miCursor=miConexion.cursor()
+            #Limpiamos nuetro treeview
+            registros=self.tree_lista_usuarios.get_children()
+            #Recorremos cada registro
+            for elementos in registros:
+                self.tree_lista_usuarios.delete(elementos)
+            #Consultar nuetra base de datos
+            miCursor.execute("SELECT * FROM Usuarios")
+            #con esto traemos todos los registros y lo guardamos en "datos"
+            datos=miCursor.fetchall()
+            #Recorremos cada fila encontrada
+            for row in datos:
+                self.tree_lista_usuarios.insert("",0,text=row[0],values=(row[0],row[1],row[2],row[3]))
+            #Aplicamos Cambios
+            miConexion.commit()
+            #Cerramos la conexion
+            miConexion.close()
+
+        except:
+            #Mensaje error
+            messagebox.showerror("Lista de Usuario","Ocurrio un error al mostrar las listas de usuario")
 
 
 
