@@ -82,6 +82,33 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         txt_busqueda_usuarios=ttk.Entry(self.lblframe_busqueda_listusu,width=50)
         txt_busqueda_usuarios.grid(row=0,column=0,padx=5,pady=5)
 
+        #==============================Treeview==================================
+
+        self.lblframe_tree_listusu=LabelFrame(self.frame_lista_usuarios)
+        self.lblframe_tree_listusu.grid(row=2,column=0,sticky=NSEW)
+
+        columnas=("codigo","nombre","clave","rol")
+
+        tree_lista_usuarios=ttk.Treeview(self.lblframe_tree_listusu,columns=columnas,height=17,show='headings')
+        tree_lista_usuarios.grid(row=0,column=0)
+
+        tree_lista_usuarios.heading("codigo",text="Codigo",anchor=W)
+        tree_lista_usuarios.heading("nombre",text="Nombre",anchor=W)
+        tree_lista_usuarios.heading("clave",text="Clave",anchor=W)
+        tree_lista_usuarios.heading("rol",text="ROL",anchor=W)
+        tree_lista_usuarios['displaycolumns']=("codigo","nombre","rol") #Ocultar barra clave
+
+        #Crear el scrolbar
+        tree_scroll_listausu=Scrollbar(self.frame_lista_usuarios)
+        tree_scroll_listausu.grid(row=0,column=1)
+        #Configurar El scrollbar
+        tree_scroll_listausu.config(command=tree_lista_usuarios-yview)
+
+
+
+
+
+
 
 def main():
     app=Ventana()
