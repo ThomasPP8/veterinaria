@@ -1,0 +1,56 @@
+git --version
+
+CDM ->
+set PATH=%PATH%;C:\Program Files\Git\bin
+
+PowerShell - >
+$env:Path += ";C:\Program Files\Git\bin"
+
+*******************************
+//Iniciar
+git init
+
+//Conectar al repositorio
+git remote add origin https://github.com/ThomasPP8/tshop_proyecto.git
+
+//
+git status
+
+//Si se quiere agregar todo se usa git add .
+git add Nombre_archivo
+
+
+git commit -m "Nota respecto al cambio hecho"
+
+git push
+
+//Si es la primera vez se usa:
+git push --set-upstream origin master
+
+
+
+*****************************
+NOTAS DADAS POR GITHUB AL CREAR EL repositorio ================
+
+…or create a new repository on the command line
+
+echo "# tshop_proyecto" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ThomasPP8/tshop_proyecto.git
+git push -u origin main
+
+******
+
+…or push an existing repository from the command line
+git remote add origin https://github.com/ThomasPP8/tshop_proyecto.git
+git branch -M main
+git push -u origin main
+
+
+
+
+NOTA: Para hacer el archivo de requerimientos...
+pip freeze > requirements.txt
