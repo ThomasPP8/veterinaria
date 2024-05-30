@@ -42,7 +42,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
         btn_compras=ttk.Button(self.frame_left,text='Compras',width=15)
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
-        btn_usuarios=ttk.Button(self.frame_left,text='Usuarios',width=15)
+        btn_usuarios=ttk.Button(self.frame_left,text='Usuarios',width=15,command=self.ventana_lista_usuarios)
         btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
         btn_reportes=ttk.Button(self.frame_left,text='Reportes',width=15)
         btn_reportes.grid(row=5,column=0,padx=10,pady=10)
@@ -57,10 +57,31 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         lbl3=Label(self.frame_right,text='Aqui Pondremos las busquedas para la ventana')
         lbl3.grid(row=0,column=0,padx=10,pady=10)
-
+    #Metodo logueo
     def logueo(self):
         self.frame_login.pack_forget()#Ocultar la ventana de Login
         self.ventana_menu()#abrir ventana de menu
+    #
+    def ventana_lista_usuarios(self):
+        self.frame_lista_usuarios=Frame(self.frame_center)
+        self.frame_lista_usuarios.grid(row=0,column=0,columnspan=2,sticky=NSEW)
+
+        self.lblframe_botones_listusu=LabelFrame(self.frame_lista_usuarios)
+        self.lblframe_botones_listusu.grid(row=0,column=0,sticky=NSEW)
+
+        btn_nuevo_usuario=ttk.Button(self.lblframe_botones_listusu,text='Nuevo',width=15)
+        btn_nuevo_usuario.grid(row=0,column=0,padx=5,pady=0)
+        btn_modificar_usuario=ttk.Button(self.lblframe_botones_listusu,text='Modificar',width=15)
+        btn_modificar_usuario.grid(row=0,column=1,padx=5,pady=0)
+        btn_eliminar_usuario=ttk.Button(self.lblframe_botones_listusu,text='Eliminar',width=15)
+        btn_eliminar_usuario.grid(row=0,column=2,padx=5,pady=0)
+
+        self.lblframe_busqueda_listusu=LabelFrame(self.frame_lista_usuarios)
+        self.lblframe_busqueda_listusu.grid(row=1,column=0,sticky=NSEW)
+
+        txt_busqueda_usuarios=ttk.Entry(self.lblframe_busqueda_listusu,width=50)
+        txt_busqueda_usuarios.grid(row=0,column=0,padx=5,pady=5)
+
 
 def main():
     app=Ventana()
