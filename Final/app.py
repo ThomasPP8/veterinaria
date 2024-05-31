@@ -122,7 +122,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nuevo_producto.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_producto = tb.Button(self.lblframe_botones_productos, text='Modificar', width=15, bootstyle="warning", command=self.show_modify_product_form)
         btn_modificar_producto.grid(row=0, column=1, padx=5, pady=5)
-        btn_eliminar_producto = tb.Button(self.lblframe_botones_productos, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_producto = tb.Button(self.lblframe_botones_productos, text='Eliminar', width=15, bootstyle="danger", command=self.delete_product)
         btn_eliminar_producto.grid(row=0, column=2, padx=5, pady=5)
 
         self.lblframe_lista_productos = LabelFrame(self.frame_productos)
@@ -492,6 +492,40 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             self.frame_right.destroy()  # Ocultar el formulario después de modificar
         
         Button(self.frame_right, text="Guardar", command=save_modified_product).grid(row=4, column=0, columnspan=2, pady=20)
+
+# ==================FUNCIONES ELIMINAR DATOS=====================
+    def delete_product(self):
+        selected_item = self.tree_lista_productos.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un producto para eliminar")
+            return
+
+        item = self.tree_lista_productos.item(selected_item)
+        product_id = item['values'][0]
+
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
+        if not confirm:
+            return
+
+        try:
+            conn = sql.connect("tshopDB.db")
+            cursor = conn.cursor()
+            
+            cursor.execute(
+                '''
+                DELETE FROM productos
+                WHERE id_producto = ?
+                ''', (product_id,)
+            )
+            
+            conn.commit()
+            conn.close()
+            
+            messagebox.showinfo("Información", "Producto eliminado exitosamente")
+            self.mostrar_productos()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
 
 
 def main():
