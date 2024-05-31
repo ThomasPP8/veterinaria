@@ -118,7 +118,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_productos = LabelFrame(self.frame_productos)
         self.lblframe_botones_productos.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-        btn_nuevo_producto = tb.Button(self.lblframe_botones_productos, text='Nuevo', width=15, bootstyle="success")
+        btn_nuevo_producto = tb.Button(self.lblframe_botones_productos, text='Nuevo', width=15, bootstyle="success", command=self.show_new_product_form)
         btn_nuevo_producto.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_producto = tb.Button(self.lblframe_botones_productos, text='Modificar', width=15, bootstyle="warning")
         btn_modificar_producto.grid(row=0, column=1, padx=5, pady=5)
@@ -278,6 +278,72 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except:
             messagebox.showerror("Lista de Clientes", "Ocurrió un error al mostrar las listas de cliente")
 
+
+# ===================FUNCIONES AGREGAR DATOS======================
+    def show_new_product_form(self):
+        # Limpiar el frame derecho
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Campos del formulario
+        Label(self.frame_right, text="Nombre").grid(row=0, column=0, padx=10, pady=10)
+        name_entry = Entry(self.frame_right)
+        name_entry.grid(row=0, column=1, padx=10, pady=10)
+        
+        Label(self.frame_right, text="Descripción").grid(row=1, column=0, padx=10, pady=10)
+        description_entry = Entry(self.frame_right)
+        description_entry.grid(row=1, column=1, padx=10, pady=10)
+        
+        Label(self.frame_right, text="Precio").grid(row=2, column=0, padx=10, pady=10)
+        price_entry = Entry(self.frame_right)
+        price_entry.grid(row=2, column=1, padx=10, pady=10)
+        
+        Label(self.frame_right, text="Stock").grid(row=3, column=0, padx=10, pady=10)
+        stock_entry = Entry(self.frame_right)
+        stock_entry.grid(row=3, column=1, padx=10, pady=10)
+        
+        # Botón para guardar el nuevo producto
+        def save_product():
+            name = name_entry.get()
+            description = description_entry.get()
+            price = price_entry.get()
+            stock = stock_entry.get()
+            
+            # Validaciones
+            if not name:
+                messagebox.showerror("Error", "El nombre es obligatorio")
+                return
+            if not description:
+                messagebox.showerror("Error", "La descripción es obligatoria")
+                return
+            try:
+                price = float(price)
+            except ValueError:
+                messagebox.showerror("Error", "El precio debe ser un número válido")
+                return
+            try:
+                stock = int(stock)
+            except ValueError:
+                messagebox.showerror("Error", "El stock debe ser un número entero")
+                return
+
+            conn = sql.connect("tshopDB.db")
+            cursor = conn.cursor()
+            
+            cursor.execute(
+                '''
+                INSERT INTO productos (nombre, descripcion, precio, stock)
+                VALUES (?, ?, ?, ?)
+                ''', (name, description, price, stock)
+            )
+            
+            conn.commit()
+            conn.close()
+            
+            messagebox.showinfo("Información", "Producto agregado exitosamente")
+            self.show_new_product_form()  # Limpiar formulario después de agregar
+        
+        Button(self.frame_right, text="Guardar", command=save_product).grid(row=4, column=0, columnspan=2, pady=20)
 
 
 
