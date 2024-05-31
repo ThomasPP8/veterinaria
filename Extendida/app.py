@@ -1,8 +1,114 @@
 from tkinter import *
 from tkinter import ttk, messagebox
 import ttkbootstrap as tb #Acceder estilos de bootstrap
+import sqlite3 as sql #Libreria de SQLittle
 
-import sqlite3
+#Creacion de Base de datos
+def createDB():
+    conn = sql.connect("tshopDB.db")
+    conn.commit()
+    conn.close
+def createTable():
+    conn = sql.connect("tshopDB.db")
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS clientes (
+            id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre VARCHAR(100),
+            apellido VARCHAR(100),
+            direccion VARCHAR(255),
+            telefono VARCHAR(20),
+            email VARCHAR(100)
+        )
+        """
+    )
+    
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS productos (
+            id_producto INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre VARCHAR(100),
+            descripcion TEXT,
+            precio DECIMAL(10, 2),
+            stock INT
+        )
+        """
+    )
+    
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS ventas (
+            id_venta INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_cliente INTEGER,
+            id_producto INTEGER,
+            cantidad INT,
+            fecha_venta DATE,
+            FOREIGN KEY(id_cliente) REFERENCES clientes(id_cliente),
+            FOREIGN KEY(id_producto) REFERENCES productos(id_producto)
+        )
+        """
+    )
+    conn.commit()
+    conn.close()
+def insert_values():
+    conn = sql.connect("tshopDB.db")
+    cursor = conn.cursor()
+    
+    # Insertar valores en la tabla clientes
+    clientes = [
+        (1, 'Juan', 'Perez', 'Calle 123, Ciudad ABC', '123456789', 'juan@example.com'),
+        (2, 'María', 'Gómez', 'Avenida XYZ, Pueblo DEF', '987654321', 'maria@example.com'),
+        (3, 'Carlos', 'Martínez', 'Carrera 456, Villa GHI', '456789012', 'carlos@example.com'),
+        (4, 'Luisa', 'Rodríguez', 'Calle Principal, Ciudad JKL', '789012345', 'luisa@example.com'),
+        (5, 'Ana', 'Sánchez', 'Avenida Central, Pueblo MNO', '210987654', 'ana@example.com'),
+        (6, 'Pedro', 'López', 'Calle Secundaria, Villa PQR', '543210987', 'pedro@example.com')
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO clientes (id_cliente, nombre, apellido, direccion, telefono, email)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, clientes
+    )
+    
+    # Insertar valores en la tabla productos
+    productos = [
+        (1, 'Espada medieval', 'Espada de acero forjado, réplica de la Edad Media', 99.99, 20),
+        (2, 'Arco y flechas', 'Arco de madera y flechas con puntas de piedra', 79.5, 15),
+        (3, 'Daga vikinga', 'Daga de hierro con empuñadura decorada, estilo vikingo', 59.75, 10),
+        (4, 'Mosquete', 'Mosquete de avancarga con cañón de bronce', 149.25, 5),
+        (5, 'Katana samurái', 'Katana japonesa auténtica, hoja de acero plegado', 199.99, 8),
+        (6, 'Ballesta medieval', 'Ballesta de madera y metal, utilizada en la Edad Media', 129, 12)
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO productos (id_producto, nombre, descripcion, precio, stock)
+        VALUES (?, ?, ?, ?, ?)
+        """, productos
+    )
+    
+    # Insertar valores en la tabla ventas
+    ventas = [
+        (1, 1, 1, 2, '2024-05-01'),
+        (2, 2, 2, 1, '2024-05-15'),
+        (3, 3, 3, 1, '2024-05-20'),
+        (4, 4, 4, 3, '2024-05-25'),
+        (5, 5, 5, 2, '2024-05-28'),
+        (6, 6, 6, 1, '2024-05-30')
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO ventas (id_venta, id_cliente, id_producto, cantidad, fecha_venta)
+        VALUES (?, ?, ?, ?, ?)
+        """, ventas
+    )
+    
+    conn.commit()
+    conn.close()
 
 class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
@@ -64,6 +170,8 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.frame_login.pack_forget()#Ocultar la ventana de Login
         self.ventana_menu()#abrir ventana de menu
 
+
+#VENTANAS ********************************
     def ventana_lista_usuarios(self):
         self.frame_lista_usuarios=Frame(self.frame_center)
         self.frame_lista_usuarios.grid(row=0,column=0,columnspan=2,sticky=NSEW)
@@ -109,36 +217,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         #Llamamos a nuestra funcion mostrar usuarios
         self.mostrar_usuarios()
-
-    def mostrar_usuarios(self):
-        #Capturador errores
-        try:
-            #Establecer la conexion
-            miConexion=sqlite3.connect('Ventas.db')
-            #Crear Cursor
-            miCursor=miConexion.cursor()
-            #Limpiamos nuetro treeview
-            registros=self.tree_lista_usuarios.get_children()
-            #Recorremos cada registro
-            for elementos in registros:
-                self.tree_lista_usuarios.delete(elementos)
-            #Consultar nuetra base de datos
-            miCursor.execute("SELECT * FROM Usuarios")
-            #con esto traemos todos los registros y lo guardamos en "datos"
-            datos=miCursor.fetchall()
-            #Recorremos cada fila encontrada
-            for row in datos:
-                self.tree_lista_usuarios.insert("",0,text=row[0],values=(row[0],row[1],row[2],row[3]))
-            #Aplicamos Cambios
-            miConexion.commit()
-            #Cerramos la conexion
-            miConexion.close()
-
-        except:
-            #Mensaje error
-            messagebox.showerror("Lista de Usuario","Ocurrio un error al mostrar las listas de usuario")
-
-#***********************************
+    
     def ventana_productos(self):
         self.frame_productos = Frame(self.frame_center)
         self.frame_productos.grid(row=0, column=0, columnspan=2, sticky=NSEW)
@@ -172,23 +251,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         tree_scroll_productos.config(command=self.tree_lista_productos.yview)
 
         self.mostrar_productos()
-
-    def mostrar_productos(self):
-        try:
-            miConexion = sqlite3.connect('tshopDB.db')
-            miCursor = miConexion.cursor()
-            miCursor.execute("SELECT * FROM productos")
-            datos = miCursor.fetchall()
-            for row in datos:
-                self.tree_lista_productos.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
-            miConexion.commit()
-        except Exception as e:
-            messagebox.showerror("Lista de Productos", f"Ocurrió un error al mostrar las listas de productos: {e}")
-        finally:
-            if miConexion:
-                miConexion.close()
-
-
+    
     def ventana_ventas(self):
         self.frame_ventas = Frame(self.frame_center)
         self.frame_ventas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
@@ -218,20 +281,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         tree_scroll_ventas.config(command=self.tree_lista_ventas.yview)
 
         self.mostrar_ventas()
-
-    def mostrar_ventas(self):
-        try:
-            miConexion = sqlite3.connect('Ventas.db')
-            miCursor = miConexion.cursor()
-            miCursor.execute("SELECT * FROM Ventas")
-            datos = miCursor.fetchall()
-            for row in datos:
-                self.tree_lista_ventas.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
-            miConexion.commit()
-            miConexion.close()
-        except:
-            messagebox.showerror("Lista de Ventas", "Ocurrió un error al mostrar las listas de ventas")
-
+    
     def ventana_clientes(self):
         self.frame_clientes = Frame(self.frame_center)
         self.frame_clientes.grid(row=0, column=0, columnspan=2, sticky=NSEW)
@@ -264,15 +314,89 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         tree_scroll_clientes.config(command=self.tree_lista_clientes.yview)
 
         self.mostrar_clientes()
-#***********************************
+
+#FUNCIONES MOSTRAR DATOS
+    def mostrar_usuarios(self):
+        #Capturador errores
+        try:
+            #Establecer la conexion
+            miConexion=sql.connect('Ventas.db')
+            #Crear Cursor
+            miCursor=miConexion.cursor()
+            #Limpiamos nuetro treeview
+            registros=self.tree_lista_usuarios.get_children()
+            #Recorremos cada registro
+            for elementos in registros:
+                self.tree_lista_usuarios.delete(elementos)
+            #Consultar nuetra base de datos
+            miCursor.execute("SELECT * FROM Usuarios")
+            #con esto traemos todos los registros y lo guardamos en "datos"
+            datos=miCursor.fetchall()
+            #Recorremos cada fila encontrada
+            for row in datos:
+                self.tree_lista_usuarios.insert("",0,text=row[0],values=(row[0],row[1],row[2],row[3]))
+            #Aplicamos Cambios
+            miConexion.commit()
+            #Cerramos la conexion
+            miConexion.close()
+
+        except:
+            #Mensaje error
+            messagebox.showerror("Lista de Usuario","Ocurrio un error al mostrar las listas de usuario")
+
+    def mostrar_productos(self):
+        try:
+            miConexion = sql.connect('tshopDB.db')
+            miCursor = miConexion.cursor()
+            miCursor.execute("SELECT * FROM productos")
+            datos = miCursor.fetchall()
+            for row in datos:
+                self.tree_lista_productos.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
+            miConexion.commit()
+        except Exception as e:
+            messagebox.showerror("Lista de Productos", f"Ocurrió un error al mostrar las listas de productos: {e}")
+        finally:
+            if miConexion:
+                miConexion.close()
+    
+    def mostrar_ventas(self):
+        try:
+            miConexion = sql.connect('tshopDB.db')
+            miCursor = miConexion.cursor()
+            miCursor.execute("SELECT * FROM Ventas")
+            datos = miCursor.fetchall()
+            for row in datos:
+                self.tree_lista_ventas.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
+            miConexion.commit()
+            miConexion.close()
+        except:
+            messagebox.showerror("Lista de Ventas", "Ocurrió un error al mostrar las listas de ventas")
+
+    def mostrar_clientes(self):
+        try:
+            miConexion = sql.connect('tshopDB.db')
+            miCursor = miConexion.cursor()
+            miCursor.execute("SELECT * FROM Clientes")
+            datos = miCursor.fetchall()
+            for row in datos:
+                self.tree_lista_clientes.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3]))
+            miConexion.commit()
+            miConexion.close()
+        except:
+            messagebox.showerror("Lista de Clientes", "Ocurrió un error al mostrar las listas de cliente")
+
+
 
 
 def main():
     app=Ventana()
     app.title('Sistema de ventas') #Titulo de la ventana
     app.state('zoomed') #zoomed inicia la ventana maximizada
-    tb.Style('vapor') #Themes: solar, superhero, darkly, cyborg, vapor - https://ttkbootstrap.readthedocs.io/en/latest/themes/dark/
+    tb.Style('solar') #Themes: solar, superhero, darkly, cyborg, vapor - https://ttkbootstrap.readthedocs.io/en/latest/themes/dark/
     app.mainloop()
 
 if __name__=='__main__':
+        #createDB()
+        #createTable()
+        #insert_values()
         main()
