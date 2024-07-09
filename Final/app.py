@@ -7,6 +7,8 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
         super().__init__()
         self.ventana_login()
+        self.icon_image = PhotoImage(file='Logo.png')
+        self.iconphoto(False, self.icon_image)
 
     #VENTANA Log in
     def ventana_login(self):
@@ -26,6 +28,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         txt_clave.configure(show='*') #Censurar clave
         btn_acceso=ttk.Button(self.lblframe__login,text='Log in',command=self.logueo)
         btn_acceso.pack(padx=10,pady=10)
+        
     #VENTANA Menu
     def ventana_menu(self):
         self.frame_left=Frame(self,width=200)
@@ -310,69 +313,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         # Llamamos a nuestra función mostrar diagnósticos
         self.mostrar_diagnosticos()
 
-#     def ventana_ventas(self):
-#         self.frame_ventas = Frame(self.frame_center)
-#         self.frame_ventas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
-
-#         self.lblframe_botones_ventas = LabelFrame(self.frame_ventas)
-#         self.lblframe_botones_ventas.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
-
-#         btn_nueva_venta = tb.Button(self.lblframe_botones_ventas, text='Registrar Venta', width=15, bootstyle="success",command=self.show_new_sale_form)
-#         btn_nueva_venta.grid(row=0, column=0, padx=5, pady=5)
-
-#         self.lblframe_lista_ventas = LabelFrame(self.frame_ventas)
-#         self.lblframe_lista_ventas.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
-
-#         columnas = ("id_venta", "producto", "cliente", "cantidad", "fecha")
-#         self.tree_lista_ventas = tb.Treeview(self.lblframe_lista_ventas, columns=columnas,
-#                                             height=17, show='headings', bootstyle='dark')
-#         self.tree_lista_ventas.grid(row=0, column=0)
-
-#         self.tree_lista_ventas.heading("id_venta", text="ID Venta", anchor=W)
-#         self.tree_lista_ventas.heading("producto", text="Producto", anchor=W)
-#         self.tree_lista_ventas.heading("cliente", text="Cliente", anchor=W)
-#         self.tree_lista_ventas.heading("cantidad", text="Cantidad", anchor=W)
-#         self.tree_lista_ventas.heading("fecha", text="Fecha", anchor=W)
-
-#         tree_scroll_ventas = tb.Scrollbar(self.frame_ventas, bootstyle='round-success')
-#         tree_scroll_ventas.grid(row=1, column=1)
-#         tree_scroll_ventas.config(command=self.tree_lista_ventas.yview)
-
-#         self.mostrar_ventas()
-
-#     def ventana_clientes(self):
-#         self.frame_clientes = Frame(self.frame_center)
-#         self.frame_clientes.grid(row=0, column=0, columnspan=2, sticky=NSEW)
-
-#         self.lblframe_botones_clientes = LabelFrame(self.frame_clientes)
-#         self.lblframe_botones_clientes.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
-
-#         btn_nuevo_cliente = tb.Button(self.lblframe_botones_clientes, text='Nuevo', width=15, bootstyle="success")
-#         btn_nuevo_cliente.grid(row=0, column=0, padx=5, pady=5)
-#         btn_modificar_cliente = tb.Button(self.lblframe_botones_clientes, text='Modificar', width=15, bootstyle="warning")
-#         btn_modificar_cliente.grid(row=0, column=1, padx=5, pady=5)
-#         btn_eliminar_cliente = tb.Button(self.lblframe_botones_clientes, text='Eliminar', width=15, bootstyle="danger")
-#         btn_eliminar_cliente.grid(row=0, column=2, padx=5, pady=5)
-
-#         self.lblframe_lista_clientes = LabelFrame(self.frame_clientes)
-#         self.lblframe_lista_clientes.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
-
-#         columnas = ("id_cliente", "nombre", "telefono", "email")
-#         self.tree_lista_clientes = tb.Treeview(self.lblframe_lista_clientes, columns=columnas,
-#                                             height=17, show='headings', bootstyle='dark')
-#         self.tree_lista_clientes.grid(row=0, column=0)
-
-#         self.tree_lista_clientes.heading("id_cliente", text="ID Cliente", anchor=W)
-#         self.tree_lista_clientes.heading("nombre", text="Nombre", anchor=W)
-#         self.tree_lista_clientes.heading("telefono", text="Teléfono", anchor=W)
-#         self.tree_lista_clientes.heading("email", text="Email", anchor=W)
-
-#         tree_scroll_clientes = tb.Scrollbar(self.frame_clientes, bootstyle='round-success')
-#         tree_scroll_clientes.grid(row=1, column=1)
-#         tree_scroll_clientes.config(command=self.tree_lista_clientes.yview)
-
-#         self.mostrar_clientes()
-
 #FUNCIONES MOSTRAR DATOS ==================
     def mostrar_clientes(self):
         #Capturador errores
@@ -558,7 +498,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 #                 messagebox.showerror("Error", "El stock debe ser un número entero")
 #                 return
 
-#             conn = sql.connect("tshopDB.db")
+#             conn = sql.connect("DataBase.db")
 #             cursor = conn.cursor()
             
 #             cursor.execute(
@@ -621,7 +561,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 #                 messagebox.showerror("Error", "La fecha es obligatoria")
 #                 return
 
-#             conn = sql.connect("tshopDB.db")
+#             conn = sql.connect("DataBase.db")
 #             cursor = conn.cursor()
             
 #             cursor.execute(
@@ -704,7 +644,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 #                 messagebox.showerror("Error", "El stock debe ser un número entero")
 #                 return
 
-#             conn = sql.connect("tshopDB.db")
+#             conn = sql.connect("DataBase.db")
 #             cursor = conn.cursor()
             
 #             cursor.execute(
@@ -740,7 +680,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     #         return
 
     #     try:
-    #         conn = sql.connect("tshopDB.db")
+    #         conn = sql.connect("DataBase.db")
     #         cursor = conn.cursor()
             
     #         cursor.execute(
@@ -770,6 +710,8 @@ def main():
     app.state('zoomed') #zoomed inicia la ventana maximizada
     tb.Style('superhero') #Themes: solar, superhero, darkly, cyborg, vapor - https://ttkbootstrap.readthedocs.io/en/latest/themes/dark/
     app.mainloop()
+
+    
 
 if __name__=='__main__':
         #createDB()
