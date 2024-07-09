@@ -35,22 +35,22 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.frame_right=Frame(self,width=400)
         self.frame_right.grid(row=0,column=2,sticky=NSEW)
 
-        btn_productos=ttk.Button(self.frame_left,text='Productos',width=15, command=self.ventana_productos)
+        btn_productos=ttk.Button(self.frame_left,text='Clientes',width=15, command=self.ventana_productos)
         btn_productos.grid(row=0,column=0,padx=10,pady=10)
-        btn_ventas=ttk.Button(self.frame_left,text='Ventas',width=15,command=self.ventana_ventas)
+        btn_ventas=ttk.Button(self.frame_left,text='Mascotas',width=15,command=self.ventana_ventas)
         btn_ventas.grid(row=1,column=0,padx=10,pady=10)
-        btn_clientes=ttk.Button(self.frame_left,text='Clientes',width=15, command=self.ventana_clientes)
+        btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_clientes)
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
-        btn_compras=ttk.Button(self.frame_left,text='Compras',width=15)
+        btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15)
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
-        btn_usuarios=ttk.Button(self.frame_left,text='Usuarios',width=15,command=self.ventana_lista_usuarios)
+        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_usuarios)
         btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
-        btn_reportes=ttk.Button(self.frame_left,text='Reportes',width=15)
-        btn_reportes.grid(row=5,column=0,padx=10,pady=10)
-        btn_backup=ttk.Button(self.frame_left,text='Backup',width=15)
-        btn_backup.grid(row=6,column=0,padx=10,pady=10)
-        btn_restaurabd=ttk.Button(self.frame_left,text='Restaurar BD',width=15)
-        btn_restaurabd.grid(row=7,column=0,padx=10,pady=10)
+        # btn_reportes=ttk.Button(self.frame_left,text='Reportes',width=15)
+        # btn_reportes.grid(row=5,column=0,padx=10,pady=10)
+        # btn_backup=ttk.Button(self.frame_left,text='Backup',width=15)
+        # btn_backup.grid(row=6,column=0,padx=10,pady=10)
+        # btn_restaurabd=ttk.Button(self.frame_left,text='Restaurar BD',width=15)
+        # btn_restaurabd.grid(row=7,column=0,padx=10,pady=10)
 
 
         lbl2=Label(self.frame_center,text='Aqui Pondremos las ventanas que creemos')
@@ -213,7 +213,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         #Capturador errores
         try:
             #Establecer la conexion
-            miConexion=sql.connect('Ventas.db')
+            miConexion=sql.connect('usuarios.db')
             #Crear Cursor
             miCursor=miConexion.cursor()
             #Limpiamos nuetro treeview
@@ -528,9 +528,14 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
 
 
+#Gestiones DB
+#Creacion BD
+
+
+# ******************************** Inicio ********************
 def main():
     app=Ventana()
-    app.title('Sistema de ventas') #Titulo de la ventana
+    app.title('Mascotas Felices') #Titulo de la ventana
     app.state('zoomed') #zoomed inicia la ventana maximizada
     tb.Style('solar') #Themes: solar, superhero, darkly, cyborg, vapor - https://ttkbootstrap.readthedocs.io/en/latest/themes/dark/
     app.mainloop()

@@ -1,0 +1,165 @@
+def createDB():
+    conn = sql.connect("DataBase.db")
+    conn.commit()
+    conn.close
+def createTable():
+    conn = sql.connect("DataBase.db")
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        """
+        -- Crear la tabla Cliente
+        CREATE TABLE Cliente (
+            ClienteID INT PRIMARY KEY,
+            TipoDocumento VARCHAR(50),
+            NumeroDocumento VARCHAR(50),
+            TipoPersona VARCHAR(50),
+            Nombre VARCHAR(100),
+            Telefono VARCHAR(50),
+            Correo VARCHAR(100),
+            DireccionCliente VARCHAR(255)
+        );
+        """
+    )
+    
+    cursor.execute(
+        """
+        -- Crear la tabla Empleado
+        CREATE TABLE Empleado (
+            EmpleadoID INT PRIMARY KEY,
+            TipoDocumento VARCHAR(50),
+            NumeroDocumento VARCHAR(50),
+            DireccionVivienda VARCHAR(255),
+            NumeroTelefono VARCHAR(50),
+            NombreCompleto VARCHAR(100),
+            CorreoElectronico VARCHAR(100),
+            FechaContratacion DATE,
+            CargoEnClinica VARCHAR(50)
+        );
+        """
+    )
+    
+    cursor.execute(
+        """
+        -- Crear la tabla Mascota
+        CREATE TABLE Mascota (
+            MascotaID INT PRIMARY KEY,
+            CodigoMascota VARCHAR(50),
+            Raza VARCHAR(50),
+            Nombre VARCHAR(100),
+            Edad INT,
+            NumeroIdentidadDueno INT,
+            Descripcion VARCHAR(255),
+            FOREIGN KEY (NumeroIdentidadDueno) REFERENCES Cliente(ClienteID)
+        );
+        """
+    )
+
+    cursor.execute(
+        """
+        -- Crear la tabla Diagnostico
+        CREATE TABLE Diagnostico (
+            DiagnosticoID INT PRIMARY KEY,
+            MascotaID INT,
+            Fecha DATE,
+            TipoServicio VARCHAR(50),
+            EmpleadoID INT,
+            FOREIGN KEY (MascotaID) REFERENCES Mascota(MascotaID),
+            FOREIGN KEY (EmpleadoID) REFERENCES Empleado(EmpleadoID)
+        );
+        """
+    )
+
+    cursor.execute(
+        """
+        -- Crear la tabla Factura
+        CREATE TABLE Factura (
+            FacturaID INT PRIMARY KEY,
+            DiagnosticoID INT,
+            DescripcionDelServicio VARCHAR(255),
+            CostoDelServicio DECIMAL(10, 2),
+            FOREIGN KEY (DiagnosticoID) REFERENCES Diagnostico(DiagnosticoID)
+        );
+        """
+    )
+
+    conn.commit()
+    conn.close()
+
+import sqlite3 as sql
+
+def insert_values():
+    conn = sql.connect("DataBase.db")
+    cursor = conn.cursor()
+    
+    # Insertar valores en la tabla Cliente
+    clientes = [
+        (1, 'CC', '123456789', 'Natural', 'Juan Perez', '3001234567', 'juan.perez@example.com', 'Calle Falsa 123'),
+        (2, 'CE', '987654321', 'Natural', 'Maria Gomez', '3019876543', 'maria.gomez@example.com', 'Avenida Siempre Viva 742'),
+        (3, 'PS', 'A1234567', 'Juridica', 'Empresa XYZ', '3025551234', 'contacto@empresaxyz.com', 'Carrera 45 #12-34')
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO Cliente (ClienteID, TipoDocumento, NumeroDocumento, TipoPersona, Nombre, Telefono, Correo, DireccionCliente)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, clientes
+    )
+    
+    # Insertar valores en la tabla Empleado
+    empleados = [
+        (1, 'CC', '234567890', 'Calle 10 #20-30', '3102345678', 'Carlos Martinez', 'carlos.martinez@example.com', '2022-01-15', 'Veterinario'),
+        (2, 'TI', '123456', 'Carrera 5 #10-15', '3112345678', 'Ana Lopez', 'ana.lopez@example.com', '2023-03-20', 'Asistente Veterinario')
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO Empleado (EmpleadoID, TipoDocumento, NumeroDocumento, DireccionVivienda, NumeroTelefono, NombreCompleto, CorreoElectronico, FechaContratacion, CargoEnClinica)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, empleados
+    )
+    
+    # Insertar valores en la tabla Mascota
+    mascotas = [
+        (1, 'M001', 'Labrador', 'Firulais', 3, 1, 'Perro de color negro'),
+        (2, 'M002', 'Persa', 'Mish', 2, 2, 'Gato de pelo largo blanco'),
+        (3, 'M003', 'Bulldog', 'Boby', 4, 1, 'Perro de color marrón')
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO Mascota (MascotaID, CodigoMascota, Raza, Nombre, Edad, NumeroIdentidadDueno, Descripcion)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, mascotas
+    )
+    
+    # Insertar valores en la tabla Diagnostico
+    diagnosticos = [
+        (1, 1, '2024-06-01', 'Vacunacion', 1),
+        (2, 2, '2024-06-10', 'Enfermedad General', 2),
+        (3, 1, '2024-07-01', 'Cirugia', 1)
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO Diagnostico (DiagnosticoID, MascotaID, Fecha, TipoServicio, EmpleadoID)
+        VALUES (?, ?, ?, ?, ?)
+        """, diagnosticos
+    )
+    
+    # Insertar valores en la tabla Factura
+    facturas = [
+        (1, 1, 'Vacunacion antirrábica', 50.00),
+        (2, 2, 'Tratamiento para resfriado', 30.00),
+        (3, 3, 'Cirugia para extracción de tumor', 200.00)
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO Factura (FacturaID, DiagnosticoID, DescripcionDelServicio, CostoDelServicio)
+        VALUES (?, ?, ?, ?)
+        """, facturas
+    )
+    
+    conn.commit()
+    conn.close()

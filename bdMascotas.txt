@@ -1,0 +1,70 @@
+-- Crear la base de datos
+CREATE DATABASE MascotasFelices;
+
+-- Usar la base de datos
+USE MascotasFelices;
+
+-- Crear la tabla Cliente
+CREATE TABLE Cliente (
+    ClienteID INT PRIMARY KEY,
+    TipoDocumento VARCHAR(50),
+    NumeroDocumento VARCHAR(50),
+    TipoPersona VARCHAR(50),
+    Nombre VARCHAR(100),
+    Telefono VARCHAR(50),
+    Correo VARCHAR(100),
+    DireccionCliente VARCHAR(255)
+);
+
+-- Crear la tabla Empleado
+CREATE TABLE Empleado (
+    EmpleadoID INT PRIMARY KEY,
+    TipoDocumento VARCHAR(50),
+    NumeroDocumento VARCHAR(50),
+    DireccionVivienda VARCHAR(255),
+    NumeroTelefono VARCHAR(50),
+    NombreCompleto VARCHAR(100),
+    CorreoElectronico VARCHAR(100),
+    FechaContratacion DATE,
+    CargoEnClinica VARCHAR(50)
+);
+
+-- Crear la tabla Mascota
+CREATE TABLE Mascota (
+    MascotaID INT PRIMARY KEY,
+    CodigoMascota VARCHAR(50),
+    Raza VARCHAR(50),
+    Nombre VARCHAR(100),
+    Edad INT,
+    NumeroIdentidadDueno INT,
+    Descripcion VARCHAR(255),
+    FOREIGN KEY (NumeroIdentidadDueno) REFERENCES Cliente(ClienteID)
+);
+
+-- Crear la tabla Diagnostico
+CREATE TABLE Diagnostico (
+    DiagnosticoID INT PRIMARY KEY,
+    MascotaID INT,
+    Fecha DATE,
+    TipoServicio VARCHAR(50),
+    EmpleadoID INT,
+    FOREIGN KEY (MascotaID) REFERENCES Mascota(MascotaID),
+    FOREIGN KEY (EmpleadoID) REFERENCES Empleado(EmpleadoID)
+);
+
+-- Crear la tabla Factura
+CREATE TABLE Factura (
+    FacturaID INT PRIMARY KEY,
+    DiagnosticoID INT,
+    DescripcionDelServicio VARCHAR(255),
+    CostoDelServicio DECIMAL(10, 2),
+    FOREIGN KEY (DiagnosticoID) REFERENCES Diagnostico(DiagnosticoID)
+);
+
+
+
+
+
+*****************************************
+
+
