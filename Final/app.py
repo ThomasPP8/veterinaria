@@ -41,9 +41,9 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_ventas.grid(row=1,column=0,padx=10,pady=10)
         btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_lista_empleados)
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
-        btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15, command=self.ventana_lista_clientes)
+        btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15, command=self.ventana_lista_diagnosticos)
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
-        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_clientes)
+        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_facturas)
         btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
 
 
@@ -213,6 +213,102 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         # Llamamos a nuestra función mostrar empleados
         self.mostrar_empleados()
 
+    def ventana_lista_facturas(self):
+        self.frame_lista_facturas = Frame(self.frame_center)
+        self.frame_lista_facturas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
+
+        self.lblframe_botones_listfac = LabelFrame(self.frame_lista_facturas)
+        self.lblframe_botones_listfac.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
+
+        btn_nueva_factura = tb.Button(self.lblframe_botones_listfac, text='Nueva', width=15, bootstyle="success")
+        btn_nueva_factura.grid(row=0, column=0, padx=5, pady=5)
+        btn_modificar_factura = tb.Button(self.lblframe_botones_listfac, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_factura.grid(row=0, column=1, padx=5, pady=5)
+        btn_eliminar_factura = tb.Button(self.lblframe_botones_listfac, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_factura.grid(row=0, column=2, padx=5, pady=5)
+
+        self.lblframe_busqueda_listfac = LabelFrame(self.frame_lista_facturas)
+        self.lblframe_busqueda_listfac.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
+
+        txt_busqueda_facturas = ttk.Entry(self.lblframe_busqueda_listfac, width=90)
+        txt_busqueda_facturas.grid(row=0, column=0, padx=5, pady=5)
+
+        #====================Treeview=====================================
+
+        self.lblframe_tree_listfac = LabelFrame(self.frame_lista_facturas)
+        self.lblframe_tree_listfac.grid(row=2, column=0, padx=10, pady=10, sticky=NSEW)
+        
+        columnas = ("FacturaID", "DiagnosticoID", "DescripcionDelServicio", "CostoDelServicio")
+
+        self.tree_lista_facturas = tb.Treeview(self.lblframe_tree_listfac, columns=columnas,
+                                            height=17, show='headings', bootstyle='dark')
+        self.tree_lista_facturas.grid(row=0, column=0, sticky='nsew')
+
+        # Configuración de encabezados de columnas
+        self.tree_lista_facturas.heading("FacturaID", text="FacturaID", anchor=W)
+        self.tree_lista_facturas.heading("DiagnosticoID", text="Diagnóstico ID", anchor=W)
+        self.tree_lista_facturas.heading("DescripcionDelServicio", text="Descripción del Servicio", anchor=W)
+        self.tree_lista_facturas.heading("CostoDelServicio", text="Costo del Servicio", anchor=W)
+
+        # Mostrar solo las columnas necesarias
+        self.tree_lista_facturas['displaycolumns'] = ("DiagnosticoID", "DescripcionDelServicio", "CostoDelServicio")
+
+        # Crear Scrollbar
+        tree_scroll_listafac = tb.Scrollbar(self.lblframe_tree_listfac, orient="vertical", command=self.tree_lista_facturas.yview, bootstyle='round-success')
+        tree_scroll_listafac.grid(row=0, column=1, sticky='ns')
+        self.tree_lista_facturas.configure(yscrollcommand=tree_scroll_listafac.set)
+
+        # Llamamos a nuestra función mostrar facturas
+        self.mostrar_facturas()
+
+    def ventana_lista_diagnosticos(self):
+        self.frame_lista_diagnosticos = Frame(self.frame_center)
+        self.frame_lista_diagnosticos.grid(row=0, column=0, columnspan=2, sticky=NSEW)
+
+        self.lblframe_botones_listdiag = LabelFrame(self.frame_lista_diagnosticos)
+        self.lblframe_botones_listdiag.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
+
+        btn_nuevo_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Nuevo', width=15, bootstyle="success")
+        btn_nuevo_diagnostico.grid(row=0, column=0, padx=5, pady=5)
+        btn_modificar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_diagnostico.grid(row=0, column=1, padx=5, pady=5)
+        btn_eliminar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_diagnostico.grid(row=0, column=2, padx=5, pady=5)
+
+        self.lblframe_busqueda_listdiag = LabelFrame(self.frame_lista_diagnosticos)
+        self.lblframe_busqueda_listdiag.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
+
+        txt_busqueda_diagnosticos = ttk.Entry(self.lblframe_busqueda_listdiag, width=90)
+        txt_busqueda_diagnosticos.grid(row=0, column=0, padx=5, pady=5)
+
+        #====================Treeview=====================================
+
+        self.lblframe_tree_listdiag = LabelFrame(self.frame_lista_diagnosticos)
+        self.lblframe_tree_listdiag.grid(row=2, column=0, padx=10, pady=10, sticky=NSEW)
+        
+        columnas = ("DiagnosticoID", "MascotaID", "Fecha", "TipoServicio", "EmpleadoID")
+
+        self.tree_lista_diagnosticos = tb.Treeview(self.lblframe_tree_listdiag, columns=columnas,
+                                                height=17, show='headings', bootstyle='dark')
+        self.tree_lista_diagnosticos.grid(row=0, column=0, sticky='nsew')
+
+        # Configuración de encabezados de columnas
+        self.tree_lista_diagnosticos.heading("DiagnosticoID", text="Diagnóstico ID", anchor=W)
+        self.tree_lista_diagnosticos.heading("MascotaID", text="Mascota ID", anchor=W)
+        self.tree_lista_diagnosticos.heading("Fecha", text="Fecha", anchor=W)
+        self.tree_lista_diagnosticos.heading("TipoServicio", text="Tipo de Servicio", anchor=W)
+        self.tree_lista_diagnosticos.heading("EmpleadoID", text="Empleado ID", anchor=W)
+
+        # Mostrar solo las columnas necesarias
+        self.tree_lista_diagnosticos['displaycolumns'] = ("MascotaID", "Fecha", "TipoServicio", "EmpleadoID")
+
+        # Crear Scrollbar
+        tree_scroll_listadiag = tb.Scrollbar(self.lblframe_tree_listdiag, orient="vertical", command=self.tree_lista_diagnosticos.yview, bootstyle='round-success')
+        tree_scroll_listadiag.grid(row=0, column=1, sticky='ns')
+        self.tree_lista_diagnosticos.configure(yscrollcommand=tree_scroll_listadiag.set)
+
+        # Llamamos a nuestra función mostrar diagnósticos
+        self.mostrar_diagnosticos()
 
 #     def ventana_ventas(self):
 #         self.frame_ventas = Frame(self.frame_center)
@@ -359,6 +455,60 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except Exception as e:
             # Mensaje de error
             messagebox.showerror("Lista de Empleados", f"Ocurrió un error al mostrar la lista de empleados: {str(e)}")
+
+    def mostrar_facturas(self):
+        try:
+            # Establecer la conexión
+            miConexion = sql.connect('DataBase.db')
+            # Crear Cursor
+            miCursor = miConexion.cursor()
+            # Limpiar nuestro treeview
+            registros = self.tree_lista_facturas.get_children()
+            # Recorrer cada registro
+            for elementos in registros:
+                self.tree_lista_facturas.delete(elementos)
+            # Consultar nuestra base de datos
+            miCursor.execute("SELECT FacturaID, DiagnosticoID, DescripcionDelServicio, CostoDelServicio FROM Factura")
+            # Traer todos los registros y guardarlos en "datos"
+            datos = miCursor.fetchall()
+            # Recorrer cada fila encontrada
+            for row in datos:
+                self.tree_lista_facturas.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3]))
+            # Aplicar cambios
+            miConexion.commit()
+            # Cerrar la conexión
+            miConexion.close()
+
+        except Exception as e:
+            # Mensaje de error
+            messagebox.showerror("Lista de Facturas", f"Ocurrió un error al mostrar la lista de facturas: {str(e)}")
+
+    def mostrar_diagnosticos(self):
+        try:
+            # Establecer la conexión
+            miConexion = sql.connect('DataBase.db')
+            # Crear Cursor
+            miCursor = miConexion.cursor()
+            # Limpiar nuestro treeview
+            registros = self.tree_lista_diagnosticos.get_children()
+            # Recorrer cada registro
+            for elementos in registros:
+                self.tree_lista_diagnosticos.delete(elementos)
+            # Consultar nuestra base de datos
+            miCursor.execute("SELECT DiagnosticoID, MascotaID, Fecha, TipoServicio, EmpleadoID FROM Diagnostico")
+            # Traer todos los registros y guardarlos en "datos"
+            datos = miCursor.fetchall()
+            # Recorrer cada fila encontrada
+            for row in datos:
+                self.tree_lista_diagnosticos.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
+            # Aplicar cambios
+            miConexion.commit()
+            # Cerrar la conexión
+            miConexion.close()
+
+        except Exception as e:
+            # Mensaje de error
+            messagebox.showerror("Lista de Diagnósticos", f"Ocurrió un error al mostrar la lista de diagnósticos: {str(e)}")
 
 # # ===================FUNCIONES AGREGAR DATOS======================
 #     def show_new_product_form(self):
@@ -575,38 +725,38 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 #         Button(self.frame_right, text="Guardar", command=save_modified_product).grid(row=4, column=0, columnspan=2, pady=20)
 
 # # ==================FUNCIONES ELIMINAR DATOS=====================
-#     def delete_product(self):
-        # selected_item = self.tree_lista_productos.selection()
-        # if not selected_item:
-        #     messagebox.showerror("Error", "Selecciona un producto para eliminar")
-        #     return
+    # def delete_product(self):
+    #     selected_item = self.tree_lista_productos.selection()
+    #     if not selected_item:
+    #         messagebox.showerror("Error", "Selecciona un producto para eliminar")
+    #         return
 
-        # item = self.tree_lista_productos.item(selected_item)
-        # product_id = item['values'][0]
+    #     item = self.tree_lista_productos.item(selected_item)
+    #     product_id = item['values'][0]
 
-        # # Confirmación antes de eliminar
-        # confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
-        # if not confirm:
-        #     return
+    #     # Confirmación antes de eliminar
+    #     confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
+    #     if not confirm:
+    #         return
 
-        # try:
-        #     conn = sql.connect("tshopDB.db")
-        #     cursor = conn.cursor()
+    #     try:
+    #         conn = sql.connect("tshopDB.db")
+    #         cursor = conn.cursor()
             
-        #     cursor.execute(
-        #         '''
-        #         DELETE FROM productos
-        #         WHERE id_producto = ?
-        #         ''', (product_id,)
-        #     )
+    #         cursor.execute(
+    #             '''
+    #             DELETE FROM productos
+    #             WHERE id_producto = ?
+    #             ''', (product_id,)
+    #         )
             
-        #     conn.commit()
-        #     conn.close()
+    #         conn.commit()
+    #         conn.close()
             
-        #     messagebox.showinfo("Información", "Producto eliminado exitosamente")
-        #     self.mostrar_productos()
-        # except Exception as e:
-        #     messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
+    #         messagebox.showinfo("Información", "Producto eliminado exitosamente")
+    #         self.mostrar_productos()
+    #     except Exception as e:
+    #         messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
 
 
 #Gestiones DB
