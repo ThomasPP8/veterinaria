@@ -37,7 +37,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_productos=ttk.Button(self.frame_left,text='Clientes',width=15, command=self.ventana_lista_clientes)
         btn_productos.grid(row=0,column=0,padx=10,pady=10)
-        btn_ventas=ttk.Button(self.frame_left,text='Mascotas',width=15,command=self.ventana_lista_clientes)
+        btn_ventas=ttk.Button(self.frame_left,text='Mascotas',width=15,command=self.ventana_lista_mascotas)
         btn_ventas.grid(row=1,column=0,padx=10,pady=10)
         btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_lista_clientes)
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
@@ -45,19 +45,13 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
         btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_clientes)
         btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
-        # btn_reportes=ttk.Button(self.frame_left,text='Reportes',width=15)
-        # btn_reportes.grid(row=5,column=0,padx=10,pady=10)
-        # btn_backup=ttk.Button(self.frame_left,text='Backup',width=15)
-        # btn_backup.grid(row=6,column=0,padx=10,pady=10)
-        # btn_restaurabd=ttk.Button(self.frame_left,text='Restaurar BD',width=15)
-        # btn_restaurabd.grid(row=7,column=0,padx=10,pady=10)
 
 
-        lbl2=Label(self.frame_center,text='Aqui Pondremos las ventanas que creemos')
-        lbl2.grid(row=0,column=0,padx=10,pady=10)
+        # lbl2=Label(self.frame_center,text='Aqui Pondremos las ventanas que creemos')
+        # lbl2.grid(row=0,column=0,padx=10,pady=10)
 
-        lbl3=Label(self.frame_right,text='Aqui Pondremos las busquedas para la ventana')
-        lbl3.grid(row=0,column=0,padx=10,pady=10)
+        # lbl3=Label(self.frame_right,text='Aqui Pondremos las busquedas para la ventana')
+        # lbl3.grid(row=0,column=0,padx=10,pady=10)
 
     def logueo(self):
         self.frame_login.pack_forget()#Ocultar la ventana de Login
@@ -72,82 +66,103 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listclient=LabelFrame(self.frame_lista_clientes)
         self.lblframe_botones_listclient.grid(row=0,column=0,padx=10,pady=10,sticky=NSEW)
 
-        btn_nuevo_usuario=tb.Button(self.lblframe_botones_listclient,text='Nuevo',width=15,bootstyle="success")
-        btn_nuevo_usuario.grid(row=0,column=0,padx=5,pady=5)
-        btn_modificar_usuario=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning")
-        btn_modificar_usuario.grid(row=0,column=1,padx=5,pady=5)
-        btn_eliminar_usuario=tb.Button(self.lblframe_botones_listclient,text='Eliminar',width=15,bootstyle="danger")
-        btn_eliminar_usuario.grid(row=0,column=2,padx=5,pady=5)
+        btn_nuevo_cliente=tb.Button(self.lblframe_botones_listclient,text='Nuevo',width=15,bootstyle="success")
+        btn_nuevo_cliente.grid(row=0,column=0,padx=5,pady=5)
+        btn_modificar_cliente=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning")
+        btn_modificar_cliente.grid(row=0,column=1,padx=5,pady=5)
+        btn_eliminar_cliente=tb.Button(self.lblframe_botones_listclient,text='Eliminar',width=15,bootstyle="danger")
+        btn_eliminar_cliente.grid(row=0,column=2,padx=5,pady=5)
 
-        self.lblframe_busqueda_listusu=LabelFrame(self.frame_lista_clientes)
-        self.lblframe_busqueda_listusu.grid(row=1,column=0,padx=10,pady=10,sticky=NSEW)
+        self.lblframe_busqueda_listclient=LabelFrame(self.frame_lista_clientes)
+        self.lblframe_busqueda_listclient.grid(row=1,column=0,padx=10,pady=10,sticky=NSEW)
 
-        txt_busqueda_usuarios=ttk.Entry(self.lblframe_busqueda_listusu,width=90)
-        txt_busqueda_usuarios.grid(row=0,column=0,padx=5,pady=5)
+        txt_busqueda_clientes=ttk.Entry(self.lblframe_busqueda_listclient,width=90)
+        txt_busqueda_clientes.grid(row=0,column=0,padx=5,pady=5)
 
         #====================Treeview=====================================
 
-        self.lblframe_tree_listusu=LabelFrame(self.frame_lista_clientes)
-        self.lblframe_tree_listusu.grid(row=2,column=0,padx=10,pady=10,sticky=NSEW)
+        self.lblframe_tree_listclient=LabelFrame(self.frame_lista_clientes)
+        self.lblframe_tree_listclient.grid(row=2,column=0,padx=10,pady=10,sticky=NSEW)
         
         columnas=("ClienteID","TipoDocumento", "#Documento", "TipoPersona", "Nombre", "Telefono", "Correo", "DireccionCliente")
 
-        self.tree_lista_usuarios=tb.Treeview(self.lblframe_tree_listusu,columns=columnas,
+        self.tree_lista_clientes=tb.Treeview(self.lblframe_tree_listclient,columns=columnas,
                                         height=17,show='headings',bootstyle='dark')
-        self.tree_lista_usuarios.grid(row=0,column=0)
+        self.tree_lista_clientes.grid(row=0,column=0)
 
-        self.tree_lista_usuarios.heading("ClienteID",text="ClienteID",anchor=W)
-        self.tree_lista_usuarios.heading("TipoDocumento",text="TipoDocumento",anchor=W)
-        self.tree_lista_usuarios.heading("#Documento",text="# Documento",anchor=W)
-        self.tree_lista_usuarios.heading("TipoPersona",text="TipoPersona",anchor=W)
-        self.tree_lista_usuarios.heading("Nombre",text="Nombre",anchor=W)
-        self.tree_lista_usuarios.heading("Telefono",text="Telefono",anchor=W)
-        self.tree_lista_usuarios.heading("Correo",text="Correo",anchor=W)
-        self.tree_lista_usuarios.heading("DireccionCliente",text="DireccionCliente",anchor=W)
-        self.tree_lista_usuarios['displaycolumns']=("TipoDocumento", "#Documento", "TipoPersona", "Nombre", "Telefono", "Correo", "DireccionCliente") #Ocultar columna clave
+        self.tree_lista_clientes.heading("ClienteID",text="ClienteID",anchor=W)
+        self.tree_lista_clientes.heading("TipoDocumento",text="TipoDocumento",anchor=W)
+        self.tree_lista_clientes.heading("#Documento",text="Numero Documento",anchor=W)
+        self.tree_lista_clientes.heading("TipoPersona",text="TipoPersona",anchor=W)
+        self.tree_lista_clientes.heading("Nombre",text="Nombre",anchor=W)
+        self.tree_lista_clientes.heading("Telefono",text="Telefono",anchor=W)
+        self.tree_lista_clientes.heading("Correo",text="Correo",anchor=W)
+        self.tree_lista_clientes.heading("DireccionCliente",text="DireccionCliente",anchor=W)
+        self.tree_lista_clientes['displaycolumns']=("TipoDocumento", "#Documento", "TipoPersona", "Nombre", "Telefono", "Correo", "DireccionCliente") #Ocultar columna clave
 
         #Crear Scrolbar
-        tree_scroll_listausu=tb.Scrollbar(self.frame_lista_clientes,bootstyle='round-success')
-        tree_scroll_listausu.grid(row=2,column=1)
+        tree_scroll_listaclient=tb.Scrollbar(self.frame_lista_clientes,bootstyle='round-success')
+        tree_scroll_listaclient.grid(row=2,column=1)
         #configurar scrolbar
-        tree_scroll_listausu.config(command=self.tree_lista_usuarios.yview)
+        tree_scroll_listaclient.config(command=self.tree_lista_clientes.yview)
 
         #Llamamos a nuestra funcion mostrar usuarios
         self.mostrar_clientes()
     
-    # def ventana_productos(self):
-    #     self.frame_productos = Frame(self.frame_center)
-    #     self.frame_productos.grid(row=0, column=0, columnspan=2, sticky=NSEW)
+    def ventana_lista_mascotas(self):
+        self.frame_lista_mascotas = Frame(self.frame_center)
+        self.frame_lista_mascotas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
 
-    #     self.lblframe_botones_productos = LabelFrame(self.frame_productos)
-    #     self.lblframe_botones_productos.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
+        self.lblframe_botones_listpet = LabelFrame(self.frame_lista_mascotas)
+        self.lblframe_botones_listpet.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-    #     btn_nuevo_producto = tb.Button(self.lblframe_botones_productos, text='Nuevo', width=15, bootstyle="success", command=self.show_new_product_form)
-    #     btn_nuevo_producto.grid(row=0, column=0, padx=5, pady=5)
-    #     btn_modificar_producto = tb.Button(self.lblframe_botones_productos, text='Modificar', width=15, bootstyle="warning", command=self.show_modify_product_form)
-    #     btn_modificar_producto.grid(row=0, column=1, padx=5, pady=5)
-    #     btn_eliminar_producto = tb.Button(self.lblframe_botones_productos, text='Eliminar', width=15, bootstyle="danger", command=self.delete_product)
-    #     btn_eliminar_producto.grid(row=0, column=2, padx=5, pady=5)
+        btn_nueva_mascota = tb.Button(self.lblframe_botones_listpet, text='Nueva', width=15, bootstyle="success")
+        btn_nueva_mascota.grid(row=0, column=0, padx=5, pady=5)
+        btn_modificar_mascota = tb.Button(self.lblframe_botones_listpet, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_mascota.grid(row=0, column=1, padx=5, pady=5)
+        btn_eliminar_mascota = tb.Button(self.lblframe_botones_listpet, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_mascota.grid(row=0, column=2, padx=5, pady=5)
 
-    #     self.lblframe_lista_productos = LabelFrame(self.frame_productos)
-    #     self.lblframe_lista_productos.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
+        self.lblframe_busqueda_listpet = LabelFrame(self.frame_lista_mascotas)
+        self.lblframe_busqueda_listpet.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
 
-    #     columnas = ("id_producto", "nombre", "descripcion", "precio", "stock")
-    #     self.tree_lista_productos = tb.Treeview(self.lblframe_lista_productos, columns=columnas,
-    #                                             height=17, show='headings', bootstyle='dark')
-    #     self.tree_lista_productos.grid(row=0, column=0)
+        txt_busqueda_mascotas = ttk.Entry(self.lblframe_busqueda_listpet, width=90)
+        txt_busqueda_mascotas.grid(row=0, column=0, padx=5, pady=5)
 
-    #     self.tree_lista_productos.heading("id_producto", text="ID Producto", anchor=W)
-    #     self.tree_lista_productos.heading("nombre", text="Nombre", anchor=W)
-    #     self.tree_lista_productos.heading("descripcion", text="Descripción", anchor=W)
-    #     self.tree_lista_productos.heading("precio", text="Precio", anchor=W)
-    #     self.tree_lista_productos.heading("stock", text="Stock", anchor=W)
+        #====================Treeview=====================================
 
-    #     tree_scroll_productos = tb.Scrollbar(self.frame_productos, bootstyle='round-success')
-    #     tree_scroll_productos.grid(row=1, column=1)
-    #     tree_scroll_productos.config(command=self.tree_lista_productos.yview)
+        self.lblframe_tree_listpet = LabelFrame(self.frame_lista_mascotas)
+        self.lblframe_tree_listpet.grid(row=2, column=0, padx=10, pady=10, sticky=NSEW)
+        
+        columnas = ("MascotaID", "CodigoMascota", "Raza", "Nombre", "Edad", "NumeroIdentidadDueno", "Descripcion")
 
-    #     self.mostrar_productos()
+        self.tree_lista_mascotas = tb.Treeview(self.lblframe_tree_listpet, columns=columnas,
+                                            height=17, show='headings', bootstyle='dark')
+        self.tree_lista_mascotas.grid(row=0, column=0, sticky='nsew')
+
+        # Configuración de encabezados de columnas
+        self.tree_lista_mascotas.heading("MascotaID", text="MascotaID", anchor=W)
+        self.tree_lista_mascotas.heading("CodigoMascota", text="CodigoMascota", anchor=W)
+        self.tree_lista_mascotas.heading("Raza", text="Raza", anchor=W)
+        self.tree_lista_mascotas.heading("Nombre", text="Nombre", anchor=W)
+        self.tree_lista_mascotas.heading("Edad", text="Edad", anchor=W)
+        self.tree_lista_mascotas.heading("NumeroIdentidadDueno", text="Documento Dueño", anchor=W)
+        self.tree_lista_mascotas.heading("Descripcion", text="Descripcion", anchor=W)
+
+        # Mostrar solo las columnas necesarias
+        self.tree_lista_mascotas['displaycolumns'] = ("CodigoMascota", "Raza", "Nombre", "Edad", "NumeroIdentidadDueno", "Descripcion")
+
+        # Crear Scrollbar
+        tree_scroll_listapet = tb.Scrollbar(self.lblframe_tree_listpet, orient="vertical", command=self.tree_lista_mascotas.yview, bootstyle='round-success')
+        tree_scroll_listapet.grid(row=0, column=1, sticky='ns')
+        self.tree_lista_mascotas.configure(yscrollcommand=tree_scroll_listapet.set)
+
+        # Llamamos a nuestra función mostrar mascotas
+        self.mostrar_mascotas()
+
+
+
+
     
 #     def ventana_ventas(self):
 #         self.frame_ventas = Frame(self.frame_center)
@@ -221,17 +236,17 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             #Crear Cursor
             miCursor=miConexion.cursor()
             #Limpiamos nuetro treeview
-            registros=self.tree_lista_usuarios.get_children()
+            registros=self.tree_lista_clientes.get_children()
             #Recorremos cada registro
             for elementos in registros:
-                self.tree_lista_usuarios.delete(elementos)
+                self.tree_lista_clientes.delete(elementos)
             #Consultar nuetra base de datos
             miCursor.execute("SELECT * FROM Cliente")
             #con esto traemos todos los registros y lo guardamos en "datos"
             datos=miCursor.fetchall()
             #Recorremos cada fila encontrada
             for row in datos:
-                self.tree_lista_usuarios.insert("",0,text=row[0],values=(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
+                self.tree_lista_clientes.insert("",0,text=row[0],values=(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7]))
             #Aplicamos Cambios
             miConexion.commit()
             #Cerramos la conexion
@@ -241,46 +256,32 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             #Mensaje error
             messagebox.showerror("Lista de Usuario","Ocurrio un error al mostrar las listas de usuario")
 
-#     def mostrar_productos(self):
-#         try:
-#             miConexion = sql.connect('tshopDB.db')
-#             miCursor = miConexion.cursor()
-#             miCursor.execute("SELECT * FROM productos")
-#             datos = miCursor.fetchall()
-#             for row in datos:
-#                 self.tree_lista_productos.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
-#             miConexion.commit()
-#         except Exception as e:
-#             messagebox.showerror("Lista de Productos", f"Ocurrió un error al mostrar las listas de productos: {e}")
-#         finally:
-#             if miConexion:
-#                 miConexion.close()
-    
-#     def mostrar_ventas(self):
-#         try:
-#             miConexion = sql.connect('tshopDB.db')
-#             miCursor = miConexion.cursor()
-#             miCursor.execute("SELECT * FROM Ventas")
-#             datos = miCursor.fetchall()
-#             for row in datos:
-#                 self.tree_lista_ventas.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4]))
-#             miConexion.commit()
-#             miConexion.close()
-#         except:
-#             messagebox.showerror("Lista de Ventas", "Ocurrió un error al mostrar las listas de ventas")
+    def mostrar_mascotas(self):
+        try:
+            # Establecer la conexión
+            miConexion = sql.connect('DataBase.db')
+            # Crear Cursor
+            miCursor = miConexion.cursor()
+            # Limpiar nuestro treeview
+            registros = self.tree_lista_mascotas.get_children()
+            # Recorrer cada registro
+            for elementos in registros:
+                self.tree_lista_mascotas.delete(elementos)
+            # Consultar nuestra base de datos
+            miCursor.execute("SELECT MascotaID, CodigoMascota, Raza, Nombre, Edad, NumeroIdentidadDueno, Descripcion FROM Mascota")
+            # Traer todos los registros y guardarlos en "datos"
+            datos = miCursor.fetchall()
+            # Recorrer cada fila encontrada
+            for row in datos:
+                self.tree_lista_mascotas.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+            # Aplicar cambios
+            miConexion.commit()
+            # Cerrar la conexión
+            miConexion.close()
 
-#     def mostrar_clientes(self):
-#         try:
-#             miConexion = sql.connect('tshopDB.db')
-#             miCursor = miConexion.cursor()
-#             miCursor.execute("SELECT * FROM Clientes")
-#             datos = miCursor.fetchall()
-#             for row in datos:
-#                 self.tree_lista_clientes.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3]))
-#             miConexion.commit()
-#             miConexion.close()
-#         except:
-#             messagebox.showerror("Lista de Clientes", "Ocurrió un error al mostrar las listas de cliente")
+        except Exception as e:
+            # Mensaje de error
+            messagebox.showerror("Lista de Mascotas", f"Ocurrió un error al mostrar la lista de mascotas: {str(e)}")
 
 
 # # ===================FUNCIONES AGREGAR DATOS======================
@@ -499,37 +500,37 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
 # # ==================FUNCIONES ELIMINAR DATOS=====================
 #     def delete_product(self):
-        selected_item = self.tree_lista_productos.selection()
-        if not selected_item:
-            messagebox.showerror("Error", "Selecciona un producto para eliminar")
-            return
+        # selected_item = self.tree_lista_productos.selection()
+        # if not selected_item:
+        #     messagebox.showerror("Error", "Selecciona un producto para eliminar")
+        #     return
 
-        item = self.tree_lista_productos.item(selected_item)
-        product_id = item['values'][0]
+        # item = self.tree_lista_productos.item(selected_item)
+        # product_id = item['values'][0]
 
-        # Confirmación antes de eliminar
-        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
-        if not confirm:
-            return
+        # # Confirmación antes de eliminar
+        # confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
+        # if not confirm:
+        #     return
 
-        try:
-            conn = sql.connect("tshopDB.db")
-            cursor = conn.cursor()
+        # try:
+        #     conn = sql.connect("tshopDB.db")
+        #     cursor = conn.cursor()
             
-            cursor.execute(
-                '''
-                DELETE FROM productos
-                WHERE id_producto = ?
-                ''', (product_id,)
-            )
+        #     cursor.execute(
+        #         '''
+        #         DELETE FROM productos
+        #         WHERE id_producto = ?
+        #         ''', (product_id,)
+        #     )
             
-            conn.commit()
-            conn.close()
+        #     conn.commit()
+        #     conn.close()
             
-            messagebox.showinfo("Información", "Producto eliminado exitosamente")
-            self.mostrar_productos()
-        except Exception as e:
-            messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
+        #     messagebox.showinfo("Información", "Producto eliminado exitosamente")
+        #     self.mostrar_productos()
+        # except Exception as e:
+        #     messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
 
 
 #Gestiones DB
