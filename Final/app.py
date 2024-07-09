@@ -39,7 +39,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_productos.grid(row=0,column=0,padx=10,pady=10)
         btn_ventas=ttk.Button(self.frame_left,text='Mascotas',width=15,command=self.ventana_lista_mascotas)
         btn_ventas.grid(row=1,column=0,padx=10,pady=10)
-        btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_lista_clientes)
+        btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_lista_empleados)
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
         btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15, command=self.ventana_lista_clientes)
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
@@ -160,10 +160,60 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         # Llamamos a nuestra función mostrar mascotas
         self.mostrar_mascotas()
 
+    def ventana_lista_empleados(self):
+        self.frame_lista_empleados = Frame(self.frame_center)
+        self.frame_lista_empleados.grid(row=0, column=0, columnspan=2, sticky=NSEW)
+
+        self.lblframe_botones_listemp = LabelFrame(self.frame_lista_empleados)
+        self.lblframe_botones_listemp.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
+
+        btn_nuevo_empleado = tb.Button(self.lblframe_botones_listemp, text='Nuevo', width=15, bootstyle="success")
+        btn_nuevo_empleado.grid(row=0, column=0, padx=5, pady=5)
+        btn_modificar_empleado = tb.Button(self.lblframe_botones_listemp, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_empleado.grid(row=0, column=1, padx=5, pady=5)
+        btn_eliminar_empleado = tb.Button(self.lblframe_botones_listemp, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_empleado.grid(row=0, column=2, padx=5, pady=5)
+
+        self.lblframe_busqueda_listemp = LabelFrame(self.frame_lista_empleados)
+        self.lblframe_busqueda_listemp.grid(row=1, column=0, padx=10, pady=10, sticky=NSEW)
+
+        txt_busqueda_empleados = ttk.Entry(self.lblframe_busqueda_listemp, width=90)
+        txt_busqueda_empleados.grid(row=0, column=0, padx=5, pady=5)
+
+        #====================Treeview=====================================
+
+        self.lblframe_tree_listemp = LabelFrame(self.frame_lista_empleados)
+        self.lblframe_tree_listemp.grid(row=2, column=0, padx=10, pady=10, sticky=NSEW)
+        
+        columnas = ("EmpleadoID", "TipoDocumento", "NumeroDocumento", "DireccionVivienda", "NumeroTelefono", "NombreCompleto", "CorreoElectronico", "FechaContratacion", "CargoEnClinica")
+
+        self.tree_lista_empleados = tb.Treeview(self.lblframe_tree_listemp, columns=columnas,
+                                                height=17, show='headings', bootstyle='dark')
+        self.tree_lista_empleados.grid(row=0, column=0, sticky='nsew')
+
+        # Configuración de encabezados de columnas
+        self.tree_lista_empleados.heading("EmpleadoID", text="EmpleadoID", anchor=W)
+        self.tree_lista_empleados.heading("TipoDocumento", text="Tipo Documento", anchor=W)
+        self.tree_lista_empleados.heading("NumeroDocumento", text="Número Documento", anchor=W)
+        self.tree_lista_empleados.heading("DireccionVivienda", text="Dirección Vivienda", anchor=W)
+        self.tree_lista_empleados.heading("NumeroTelefono", text="Número Teléfono", anchor=W)
+        self.tree_lista_empleados.heading("NombreCompleto", text="Nombre Completo", anchor=W)
+        self.tree_lista_empleados.heading("CorreoElectronico", text="Correo Electrónico", anchor=W)
+        self.tree_lista_empleados.heading("FechaContratacion", text="Fecha Contratación", anchor=W)
+        self.tree_lista_empleados.heading("CargoEnClinica", text="Cargo en Clínica", anchor=W)
+
+        # Mostrar solo las columnas necesarias
+        self.tree_lista_empleados['displaycolumns'] = ("TipoDocumento", "NumeroDocumento", "DireccionVivienda", "NumeroTelefono", "NombreCompleto", "CorreoElectronico", "FechaContratacion", "CargoEnClinica")
+
+        # Crear Scrollbar
+        tree_scroll_listaemp = tb.Scrollbar(self.lblframe_tree_listemp, orient="vertical", command=self.tree_lista_empleados.yview, bootstyle='round-success')
+        tree_scroll_listaemp.grid(row=0, column=1, sticky='ns')
+        self.tree_lista_empleados.configure(yscrollcommand=tree_scroll_listaemp.set)
+
+        # Llamamos a nuestra función mostrar empleados
+        self.mostrar_empleados()
 
 
-
-    
 #     def ventana_ventas(self):
 #         self.frame_ventas = Frame(self.frame_center)
 #         self.frame_ventas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
@@ -193,7 +243,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 #         tree_scroll_ventas.config(command=self.tree_lista_ventas.yview)
 
 #         self.mostrar_ventas()
-    
+
 #     def ventana_clientes(self):
 #         self.frame_clientes = Frame(self.frame_center)
 #         self.frame_clientes.grid(row=0, column=0, columnspan=2, sticky=NSEW)
@@ -283,6 +333,32 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             # Mensaje de error
             messagebox.showerror("Lista de Mascotas", f"Ocurrió un error al mostrar la lista de mascotas: {str(e)}")
 
+    def mostrar_empleados(self):
+        try:
+            # Establecer la conexión
+            miConexion = sql.connect('DataBase.db')
+            # Crear Cursor
+            miCursor = miConexion.cursor()
+            # Limpiar nuestro treeview
+            registros = self.tree_lista_empleados.get_children()
+            # Recorrer cada registro
+            for elementos in registros:
+                self.tree_lista_empleados.delete(elementos)
+            # Consultar nuestra base de datos
+            miCursor.execute("SELECT EmpleadoID, TipoDocumento, NumeroDocumento, DireccionVivienda, NumeroTelefono, NombreCompleto, CorreoElectronico, FechaContratacion, CargoEnClinica FROM Empleado")
+            # Traer todos los registros y guardarlos en "datos"
+            datos = miCursor.fetchall()
+            # Recorrer cada fila encontrada
+            for row in datos:
+                self.tree_lista_empleados.insert("", 0, text=row[0], values=(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
+            # Aplicar cambios
+            miConexion.commit()
+            # Cerrar la conexión
+            miConexion.close()
+
+        except Exception as e:
+            # Mensaje de error
+            messagebox.showerror("Lista de Empleados", f"Ocurrió un error al mostrar la lista de empleados: {str(e)}")
 
 # # ===================FUNCIONES AGREGAR DATOS======================
 #     def show_new_product_form(self):
