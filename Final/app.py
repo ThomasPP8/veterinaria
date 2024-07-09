@@ -43,7 +43,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_clientes.grid(row=2,column=0,padx=10,pady=10)
         btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15)
         btn_compras.grid(row=3,column=0,padx=10,pady=10)
-        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_usuarios)
+        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_clientes)
         btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
         # btn_reportes=ttk.Button(self.frame_left,text='Reportes',width=15)
         # btn_reportes.grid(row=5,column=0,padx=10,pady=10)
@@ -65,7 +65,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
 
 #VENTANAS ********************************
-    def ventana_lista_usuarios(self):
+    def ventana_lista_clientes(self):
         self.frame_lista_usuarios=Frame(self.frame_center)
         self.frame_lista_usuarios.grid(row=0,column=0,columnspan=2,sticky=NSEW)
 
