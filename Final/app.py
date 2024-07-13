@@ -1473,8 +1473,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
 #Gestiones DB
     
-#Creacion BD
-
 
 # ******************************** Inicio ********************
 def main():
