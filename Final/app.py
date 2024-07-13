@@ -75,7 +75,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nuevo_cliente.grid(row=0,column=0,padx=5,pady=5)
         btn_modificar_cliente=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning", command=self.modificar_cliente)
         btn_modificar_cliente.grid(row=0,column=1,padx=5,pady=5)
-        btn_eliminar_cliente=tb.Button(self.lblframe_botones_listclient,text='Eliminar',width=15,bootstyle="danger")
+        btn_eliminar_cliente=tb.Button(self.lblframe_botones_listclient,text='Eliminar',width=15,bootstyle="danger", command=self.eliminar_cliente)
         btn_eliminar_cliente.grid(row=0,column=2,padx=5,pady=5)
 
         self.lblframe_busqueda_listclient=LabelFrame(self.frame_lista_clientes)
@@ -125,7 +125,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nueva_mascota.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_mascota = tb.Button(self.lblframe_botones_listpet, text='Modificar', width=15, bootstyle="warning", command=self.modificar_mascota)
         btn_modificar_mascota.grid(row=0, column=1, padx=5, pady=5)
-        btn_eliminar_mascota = tb.Button(self.lblframe_botones_listpet, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_mascota = tb.Button(self.lblframe_botones_listpet, text='Eliminar', width=15, bootstyle="danger", command=self.eliminar_mascota)
         btn_eliminar_mascota.grid(row=0, column=2, padx=5, pady=5)
 
         self.lblframe_busqueda_listpet = LabelFrame(self.frame_lista_mascotas)
@@ -176,7 +176,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nuevo_empleado.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_empleado = tb.Button(self.lblframe_botones_listemp, text='Modificar', width=15, bootstyle="warning", command=self.modificar_empleado)
         btn_modificar_empleado.grid(row=0, column=1, padx=5, pady=5)
-        btn_eliminar_empleado = tb.Button(self.lblframe_botones_listemp, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_empleado = tb.Button(self.lblframe_botones_listemp, text='Eliminar', width=15, bootstyle="danger", command=self.eliminar_empleado)
         btn_eliminar_empleado.grid(row=0, column=2, padx=5, pady=5)
 
         self.lblframe_busqueda_listemp = LabelFrame(self.frame_lista_empleados)
@@ -229,7 +229,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nueva_factura.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_factura = tb.Button(self.lblframe_botones_listfac, text='Modificar', width=15, bootstyle="warning", command=self.modificar_factura)
         btn_modificar_factura.grid(row=0, column=1, padx=5, pady=5)
-        btn_eliminar_factura = tb.Button(self.lblframe_botones_listfac, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_factura = tb.Button(self.lblframe_botones_listfac, text='Eliminar', width=15, bootstyle="danger", command=self.eliminar_factura)
         btn_eliminar_factura.grid(row=0, column=2, padx=5, pady=5)
 
         self.lblframe_busqueda_listfac = LabelFrame(self.frame_lista_facturas)
@@ -277,7 +277,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         btn_nuevo_diagnostico.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Modificar', width=15, bootstyle="warning", command=self.modificar_diagnostico)
         btn_modificar_diagnostico.grid(row=0, column=1, padx=5, pady=5)
-        btn_eliminar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Eliminar', width=15, bootstyle="danger")
+        btn_eliminar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Eliminar', width=15, bootstyle="danger", command=self.eliminar_diagnostico)
         btn_eliminar_diagnostico.grid(row=0, column=2, padx=5, pady=5)
 
         self.lblframe_busqueda_listdiag = LabelFrame(self.frame_lista_diagnosticos)
@@ -846,7 +846,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al guardar la factura: {e}")
 
 # # ================FUNCIONES MODIFICAR DATOS=======================
-
     def modificar_cliente(self):
         # Obtener la selección actual del Treeview
         selected_item = self.tree_lista_clientes.selection()
@@ -952,7 +951,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al modificar el cliente: {e}")
 
 # =============
-
     def modificar_mascota(self):
         # Obtener la selección actual del Treeview
         selected_item = self.tree_lista_mascotas.selection()
@@ -1048,7 +1046,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al modificar la mascota: {e}")
 
 # =============
-
     def modificar_empleado(self):
         # Obtener la selección actual del Treeview
         selected_item = self.tree_lista_empleados.selection()
@@ -1160,7 +1157,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al modificar el empleado: {e}")
 
 # ============
-
     def modificar_diagnostico(self):
         # Obtener la selección actual del Treeview
         selected_item = self.tree_lista_diagnosticos.selection()
@@ -1243,7 +1239,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Error", f"Ocurrió un error al modificar el diagnóstico: {e}")
 
 # ===========
-
     def modificar_factura(self):
         # Obtener la selección actual del Treeview
         selected_item = self.tree_lista_facturas.selection()
@@ -1318,11 +1313,162 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al modificar la factura: {e}")
 
-
 # # ==================FUNCIONES ELIMINAR DATOS=====================
 
+    def eliminar_cliente(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_clientes.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un cliente para eliminar")
+            return
 
+        # Obtener los datos del cliente seleccionado
+        item = self.tree_lista_clientes.item(selected_item)
+        cliente_id = item['values'][0]
 
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este cliente?")
+        if not confirm:
+            return
+
+        # Eliminar el cliente de la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM Cliente WHERE ClienteID = ?
+            ''', (cliente_id,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Cliente eliminado exitosamente")
+            # Actualizar la vista de la lista de clientes
+            self.mostrar_clientes()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar el cliente: {e}")
+
+    def eliminar_mascota(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_mascotas.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona una mascota para eliminar")
+            return
+
+        # Obtener los datos de la mascota seleccionada
+        item = self.tree_lista_mascotas.item(selected_item)
+        mascota_id = item['values'][0]
+
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar esta mascota?")
+        if not confirm:
+            return
+
+        # Eliminar la mascota de la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM Mascota WHERE MascotaID = ?
+            ''', (mascota_id,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Mascota eliminada exitosamente")
+            # Actualizar la vista de la lista de mascotas
+            self.mostrar_mascotas()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar la mascota: {e}")
+
+    def eliminar_empleado(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_empleados.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un empleado para eliminar")
+            return
+
+        # Obtener los datos del empleado seleccionado
+        item = self.tree_lista_empleados.item(selected_item)
+        empleado_id = item['values'][0]
+
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este empleado?")
+        if not confirm:
+            return
+
+        # Eliminar el empleado de la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM Empleado WHERE EmpleadoID = ?
+            ''', (empleado_id,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Empleado eliminado exitosamente")
+            # Actualizar la vista de la lista de empleados
+            self.mostrar_empleados()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar el empleado: {e}")
+
+    def eliminar_diagnostico(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_diagnosticos.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un diagnóstico para eliminar")
+            return
+
+        # Obtener los datos del diagnóstico seleccionado
+        item = self.tree_lista_diagnosticos.item(selected_item)
+        diagnostico_id = item['values'][0]
+
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este diagnóstico?")
+        if not confirm:
+            return
+
+        # Eliminar el diagnóstico de la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM Diagnostico WHERE DiagnosticoID = ?
+            ''', (diagnostico_id,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Diagnóstico eliminado exitosamente")
+            # Actualizar la vista de la lista de diagnósticos
+            self.mostrar_diagnosticos()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar el diagnóstico: {e}")
+
+    def eliminar_factura(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_facturas.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona una factura para eliminar")
+            return
+
+        # Obtener los datos de la factura seleccionada
+        item = self.tree_lista_facturas.item(selected_item)
+        factura_id = item['values'][0]
+
+        # Confirmación antes de eliminar
+        confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar esta factura?")
+        if not confirm:
+            return
+
+        # Eliminar la factura de la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM Factura WHERE FacturaID = ?
+            ''', (factura_id,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Factura eliminada exitosamente")
+            # Actualizar la vista de la lista de facturas
+            self.mostrar_facturas()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al eliminar la factura: {e}")
 
 
 #Gestiones DB
@@ -1337,8 +1483,6 @@ def main():
     app.state('zoomed') #zoomed inicia la ventana maximizada
     tb.Style('superhero') #Themes: solar, superhero, darkly, cyborg, vapor - https://ttkbootstrap.readthedocs.io/en/latest/themes/dark/
     app.mainloop()
-
-    
 
 if __name__=='__main__':
         #createDB()
