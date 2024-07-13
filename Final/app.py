@@ -1,7 +1,9 @@
 from tkinter import *
+import tkinter as tk
 from tkinter import ttk, messagebox
 import ttkbootstrap as tb #Acceder estilos de bootstrap
 import sqlite3 as sql #Libreria de SQLittle
+import random
 
 class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
@@ -69,7 +71,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listclient=LabelFrame(self.frame_lista_clientes)
         self.lblframe_botones_listclient.grid(row=0,column=0,padx=10,pady=10,sticky=NSEW)
 
-        btn_nuevo_cliente=tb.Button(self.lblframe_botones_listclient,text='Nuevo',width=15,bootstyle="success")
+        btn_nuevo_cliente=tb.Button(self.lblframe_botones_listclient,text='Nuevo',width=15,bootstyle="success", command=self.nuevo_cliente)
         btn_nuevo_cliente.grid(row=0,column=0,padx=5,pady=5)
         btn_modificar_cliente=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning")
         btn_modificar_cliente.grid(row=0,column=1,padx=5,pady=5)
@@ -119,7 +121,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listpet = LabelFrame(self.frame_lista_mascotas)
         self.lblframe_botones_listpet.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-        btn_nueva_mascota = tb.Button(self.lblframe_botones_listpet, text='Nueva', width=15, bootstyle="success")
+        btn_nueva_mascota = tb.Button(self.lblframe_botones_listpet, text='Nueva', width=15, bootstyle="success", command=self.nuevo_mascota)
         btn_nueva_mascota.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_mascota = tb.Button(self.lblframe_botones_listpet, text='Modificar', width=15, bootstyle="warning")
         btn_modificar_mascota.grid(row=0, column=1, padx=5, pady=5)
@@ -303,7 +305,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.tree_lista_diagnosticos.heading("EmpleadoID", text="Empleado ID", anchor=W)
 
         # Mostrar solo las columnas necesarias
-        self.tree_lista_diagnosticos['displaycolumns'] = ("MascotaID", "Fecha", "TipoServicio", "EmpleadoID")
+        self.tree_lista_diagnosticos['displaycolumns'] = ("DiagnosticoID", "MascotaID", "Fecha", "TipoServicio", "EmpleadoID")
 
         # Crear Scrollbar
         tree_scroll_listadiag = tb.Scrollbar(self.lblframe_tree_listdiag, orient="vertical", command=self.tree_lista_diagnosticos.yview, bootstyle='round-success')
@@ -451,6 +453,164 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             messagebox.showerror("Lista de Diagnósticos", f"Ocurrió un error al mostrar la lista de diagnósticos: {str(e)}")
 
 # # ===================FUNCIONES AGREGAR DATOS======================
+
+    def nuevo_cliente(self):
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        lbl_id_cliente = tb.Label(self.frame_right, text="ID Cliente")
+        lbl_id_cliente.grid(row=0, column=0, padx=10, pady=10)
+        self.id_cliente = tk.StringVar(value=str(random.randint(1000, 9999)))
+        entry_id_cliente = tb.Entry(self.frame_right, textvariable=self.id_cliente, state='readonly')
+        entry_id_cliente.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_tipo_documento = tb.Label(self.frame_right, text="Tipo de Documento")
+        lbl_tipo_documento.grid(row=1, column=0, padx=10, pady=10)
+        self.tipo_documento = tk.StringVar()
+        cb_tipo_documento = tb.Combobox(self.frame_right, textvariable=self.tipo_documento)
+        cb_tipo_documento['values'] = ('CC', 'CE', 'PS', 'PEP', 'PPT')
+        cb_tipo_documento.grid(row=1, column=1, padx=10, pady=10)
+
+        lbl_documento = tb.Label(self.frame_right, text="Documento")
+        lbl_documento.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_documento = tb.Entry(self.frame_right)
+        self.entry_documento.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_tipo_persona = tb.Label(self.frame_right, text="Tipo de Persona")
+        lbl_tipo_persona.grid(row=3, column=0, padx=10, pady=10)
+        self.tipo_persona = tk.StringVar()
+        cb_tipo_persona = tb.Combobox(self.frame_right, textvariable=self.tipo_persona)
+        cb_tipo_persona['values'] = ('Natural', 'Jurídica')
+        cb_tipo_persona.grid(row=3, column=1, padx=10, pady=10)
+
+        lbl_nombre = tb.Label(self.frame_right, text="Nombre")
+        lbl_nombre.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_nombre = tb.Entry(self.frame_right)
+        self.entry_nombre.grid(row=4, column=1, padx=10, pady=10)
+
+        lbl_telefono = tb.Label(self.frame_right, text="Teléfono")
+        lbl_telefono.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_telefono = tb.Entry(self.frame_right)
+        self.entry_telefono.grid(row=5, column=1, padx=10, pady=10)
+
+        lbl_correo = tb.Label(self.frame_right, text="Correo")
+        lbl_correo.grid(row=6, column=0, padx=10, pady=10)
+        self.entry_correo = tb.Entry(self.frame_right)
+        self.entry_correo.grid(row=6, column=1, padx=10, pady=10)
+
+        lbl_direccion = tb.Label(self.frame_right, text="Dirección")
+        lbl_direccion.grid(row=7, column=0, padx=10, pady=10)
+        self.entry_direccion = tb.Entry(self.frame_right)
+        self.entry_direccion.grid(row=7, column=1, padx=10, pady=10)
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar', bootstyle="success", command=self.guardar_cliente)
+        btn_guardar.grid(row=8, column=0, columnspan=2, pady=10)
+
+    def guardar_cliente(self):
+        # Obtener los datos del formulario
+        id_cliente = self.id_cliente.get()
+        tipo_documento = self.tipo_documento.get()
+        documento = self.entry_documento.get()
+        tipo_persona = self.tipo_persona.get()
+        nombre = self.entry_nombre.get()
+        telefono = self.entry_telefono.get()
+        correo = self.entry_correo.get()
+        direccion = self.entry_direccion.get()
+
+        # Guardar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO cliente (ClienteID, TipoDocumento, NumeroDocumento, TipoPersona, Nombre, Telefono, Correo, DireccionCliente)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (id_cliente, tipo_documento, documento, tipo_persona, nombre, telefono, correo, direccion))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Cliente registrado exitosamente")
+            # Limpiar formulario
+            self.nuevo_cliente()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al guardar el cliente: {e}")
+
+# ************************
+
+    def nuevo_mascota(self):
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        lbl_id_mascota = tb.Label(self.frame_right, text="ID Mascota")
+        lbl_id_mascota.grid(row=0, column=0, padx=10, pady=10)
+        self.id_mascota = tk.StringVar(value=str(random.randint(1000, 9999)))
+        entry_id_mascota = tb.Entry(self.frame_right, textvariable=self.id_mascota, state='readonly')
+        entry_id_mascota.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_codigo_mascota = tb.Label(self.frame_right, text="Código Mascota")
+        lbl_codigo_mascota.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_codigo_mascota = tb.Entry(self.frame_right)
+        self.entry_codigo_mascota.grid(row=1, column=1, padx=10, pady=10)
+
+        lbl_raza = tb.Label(self.frame_right, text="Raza")
+        lbl_raza.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_raza = tb.Entry(self.frame_right)
+        self.entry_raza.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_nombre = tb.Label(self.frame_right, text="Nombre")
+        lbl_nombre.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_nombre_mascota = tb.Entry(self.frame_right)
+        self.entry_nombre_mascota.grid(row=3, column=1, padx=10, pady=10)
+
+        lbl_edad = tb.Label(self.frame_right, text="Edad")
+        lbl_edad.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_edad = tb.Entry(self.frame_right)
+        self.entry_edad.grid(row=4, column=1, padx=10, pady=10)
+
+        lbl_numero_identidad_dueno = tb.Label(self.frame_right, text="Número Identidad Dueño")
+        lbl_numero_identidad_dueno.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_numero_identidad_dueno = tb.Entry(self.frame_right)
+        self.entry_numero_identidad_dueno.grid(row=5, column=1, padx=10, pady=10)
+
+        lbl_descripcion = tb.Label(self.frame_right, text="Descripción")
+        lbl_descripcion.grid(row=6, column=0, padx=10, pady=10)
+        self.entry_descripcion = tb.Entry(self.frame_right)
+        self.entry_descripcion.grid(row=6, column=1, padx=10, pady=10)
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar', bootstyle="success", command=self.guardar_mascota)
+        btn_guardar.grid(row=7, column=0, columnspan=2, pady=10)
+
+    def guardar_mascota(self):
+        # Obtener los datos del formulario
+        id_mascota = self.id_mascota.get()
+        codigo_mascota = self.entry_codigo_mascota.get()
+        raza = self.entry_raza.get()
+        nombre = self.entry_nombre_mascota.get()
+        edad = self.entry_edad.get()
+        numero_identidad_dueno = self.entry_numero_identidad_dueno.get()
+        descripcion = self.entry_descripcion.get()
+
+        # Guardar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO Mascota (MascotaID, CodigoMascota, Raza, Nombre, Edad, NumeroIdentidadDueno, Descripcion)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (id_mascota, codigo_mascota, raza, nombre, edad, numero_identidad_dueno, descripcion))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Mascota registrada exitosamente")
+            # Limpiar formulario
+            self.nuevo_mascota()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al guardar la mascota: {e}")
+
+
 #     def show_new_product_form(self):
 #         # Limpiar el frame derecho
 #         for widget in self.frame_right.winfo_children():
@@ -700,6 +860,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
 
 #Gestiones DB
+    
 #Creacion BD
 
 
