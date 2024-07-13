@@ -172,7 +172,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listemp = LabelFrame(self.frame_lista_empleados)
         self.lblframe_botones_listemp.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-        btn_nuevo_empleado = tb.Button(self.lblframe_botones_listemp, text='Nuevo', width=15, bootstyle="success")
+        btn_nuevo_empleado = tb.Button(self.lblframe_botones_listemp, text='Nuevo', width=15, bootstyle="success", command=self.nuevo_empleado)
         btn_nuevo_empleado.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_empleado = tb.Button(self.lblframe_botones_listemp, text='Modificar', width=15, bootstyle="warning")
         btn_modificar_empleado.grid(row=0, column=1, padx=5, pady=5)
@@ -225,7 +225,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listfac = LabelFrame(self.frame_lista_facturas)
         self.lblframe_botones_listfac.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-        btn_nueva_factura = tb.Button(self.lblframe_botones_listfac, text='Nueva', width=15, bootstyle="success")
+        btn_nueva_factura = tb.Button(self.lblframe_botones_listfac, text='Nueva', width=15, bootstyle="success", command=self.nuevo_factura)
         btn_nueva_factura.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_factura = tb.Button(self.lblframe_botones_listfac, text='Modificar', width=15, bootstyle="warning")
         btn_modificar_factura.grid(row=0, column=1, padx=5, pady=5)
@@ -273,7 +273,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.lblframe_botones_listdiag = LabelFrame(self.frame_lista_diagnosticos)
         self.lblframe_botones_listdiag.grid(row=0, column=0, padx=10, pady=10, sticky=NSEW)
 
-        btn_nuevo_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Nuevo', width=15, bootstyle="success")
+        btn_nuevo_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Nuevo', width=15, bootstyle="success", command=self.nuevo_diagnostico)
         btn_nuevo_diagnostico.grid(row=0, column=0, padx=5, pady=5)
         btn_modificar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Modificar', width=15, bootstyle="warning")
         btn_modificar_diagnostico.grid(row=0, column=1, padx=5, pady=5)
@@ -536,7 +536,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al guardar el cliente: {e}")
 
-# ************************
+# ***********************
 
     def nuevo_mascota(self):
         # Limpiar el frame derecho antes de agregar el formulario
@@ -613,6 +613,237 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
             self.nuevo_mascota()
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al guardar la mascota: {e}")
+
+# ***********************
+
+    def nuevo_empleado(self):
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        lbl_id_empleado = tb.Label(self.frame_right, text="ID Empleado")
+        lbl_id_empleado.grid(row=0, column=0, padx=10, pady=10)
+        self.id_empleado = tk.StringVar(value=str(random.randint(1000, 9999)))
+        entry_id_empleado = tb.Entry(self.frame_right, textvariable=self.id_empleado, state='readonly')
+        entry_id_empleado.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_tipo_documento = tb.Label(self.frame_right, text="Tipo de Documento")
+        lbl_tipo_documento.grid(row=1, column=0, padx=10, pady=10)
+        self.tipo_documento = tk.StringVar()
+        cb_tipo_documento = tb.Combobox(self.frame_right, textvariable=self.tipo_documento)
+        cb_tipo_documento['values'] = ('CC', 'CE', 'PS', 'PEP', 'PPT')
+        cb_tipo_documento.grid(row=1, column=1, padx=10, pady=10)
+
+        lbl_numero_documento = tb.Label(self.frame_right, text="Número de Documento")
+        lbl_numero_documento.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_numero_documento = tb.Entry(self.frame_right)
+        self.entry_numero_documento.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_direccion_vivienda = tb.Label(self.frame_right, text="Dirección de Vivienda")
+        lbl_direccion_vivienda.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_direccion_vivienda = tb.Entry(self.frame_right)
+        self.entry_direccion_vivienda.grid(row=3, column=1, padx=10, pady=10)
+
+        lbl_numero_telefono = tb.Label(self.frame_right, text="Número de Teléfono")
+        lbl_numero_telefono.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_numero_telefono = tb.Entry(self.frame_right)
+        self.entry_numero_telefono.grid(row=4, column=1, padx=10, pady=10)
+
+        lbl_nombre_completo = tb.Label(self.frame_right, text="Nombre Completo")
+        lbl_nombre_completo.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_nombre_completo = tb.Entry(self.frame_right)
+        self.entry_nombre_completo.grid(row=5, column=1, padx=10, pady=10)
+
+        lbl_correo_electronico = tb.Label(self.frame_right, text="Correo Electrónico")
+        lbl_correo_electronico.grid(row=6, column=0, padx=10, pady=10)
+        self.entry_correo_electronico = tb.Entry(self.frame_right)
+        self.entry_correo_electronico.grid(row=6, column=1, padx=10, pady=10)
+
+        lbl_fecha_contratacion = tb.Label(self.frame_right, text="Fecha de Contratación")
+        lbl_fecha_contratacion.grid(row=7, column=0, padx=10, pady=10)
+        self.entry_fecha_contratacion = tb.Entry(self.frame_right)
+        self.entry_fecha_contratacion.grid(row=7, column=1, padx=10, pady=10)
+
+        lbl_cargo_en_clinica = tb.Label(self.frame_right, text="Cargo en Clínica")
+        lbl_cargo_en_clinica.grid(row=8, column=0, padx=10, pady=10)
+        self.entry_cargo_en_clinica = tb.Entry(self.frame_right)
+        self.entry_cargo_en_clinica.grid(row=8, column=1, padx=10, pady=10)
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar', bootstyle="success", command=self.guardar_empleado)
+        btn_guardar.grid(row=9, column=0, columnspan=2, pady=10)
+
+    def guardar_empleado(self):
+        # Obtener los datos del formulario
+        id_empleado = self.id_empleado.get()
+        tipo_documento = self.tipo_documento.get()
+        numero_documento = self.entry_numero_documento.get()
+        direccion_vivienda = self.entry_direccion_vivienda.get()
+        numero_telefono = self.entry_numero_telefono.get()
+        nombre_completo = self.entry_nombre_completo.get()
+        correo_electronico = self.entry_correo_electronico.get()
+        fecha_contratacion = self.entry_fecha_contratacion.get()
+        cargo_en_clinica = self.entry_cargo_en_clinica.get()
+
+        # Guardar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO Empleado (EmpleadoID, TipoDocumento, NumeroDocumento, DireccionVivienda, NumeroTelefono, NombreCompleto, CorreoElectronico, FechaContratacion, CargoEnClinica)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (id_empleado, tipo_documento, numero_documento, direccion_vivienda, numero_telefono, nombre_completo, correo_electronico, fecha_contratacion, cargo_en_clinica))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Empleado registrado exitosamente")
+            # Limpiar formulario
+            self.nuevo_empleado()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al guardar el empleado: {e}")
+
+# ***********************
+
+    def nuevo_diagnostico(self):
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        lbl_id_diagnostico = tb.Label(self.frame_right, text="ID Diagnóstico")
+        lbl_id_diagnostico.grid(row=0, column=0, padx=10, pady=10)
+        self.id_diagnostico = tk.StringVar(value=str(random.randint(1000, 9999)))
+        entry_id_diagnostico = tb.Entry(self.frame_right, textvariable=self.id_diagnostico, state='readonly')
+        entry_id_diagnostico.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_mascota_id = tb.Label(self.frame_right, text="ID Mascota")
+        lbl_mascota_id.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_mascota_id = tb.Entry(self.frame_right)
+        self.entry_mascota_id.grid(row=1, column=1, padx=10, pady=10)
+
+        lbl_fecha = tb.Label(self.frame_right, text="Fecha")
+        lbl_fecha.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_fecha = tb.Entry(self.frame_right)
+        self.entry_fecha.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_tipo_servicio = tb.Label(self.frame_right, text="Tipo de Servicio")
+        lbl_tipo_servicio.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_tipo_servicio = tb.Entry(self.frame_right)
+        self.entry_tipo_servicio.grid(row=3, column=1, padx=10, pady=10)
+
+        lbl_empleado_id = tb.Label(self.frame_right, text="ID Empleado")
+        lbl_empleado_id.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_empleado_id = tb.Entry(self.frame_right)
+        self.entry_empleado_id.grid(row=4, column=1, padx=10, pady=10)
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar', bootstyle="success", command=self.guardar_diagnostico)
+        btn_guardar.grid(row=5, column=0, columnspan=2, pady=10)
+
+    def guardar_diagnostico(self):
+        # Obtener los datos del formulario
+        id_diagnostico = self.id_diagnostico.get()
+        mascota_id = self.entry_mascota_id.get()
+        fecha = self.entry_fecha.get()
+        tipo_servicio = self.entry_tipo_servicio.get()
+        empleado_id = self.entry_empleado_id.get()
+
+        # Verificar si el ID de mascota y empleado existen
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            
+            # Verificar existencia de mascota
+            cursor.execute("SELECT COUNT(*) FROM Mascota WHERE MascotaID=?", (mascota_id,))
+            if cursor.fetchone()[0] == 0:
+                messagebox.showerror("Error", "El ID de mascota no existe.")
+                conn.close()
+                return
+            
+            # Verificar existencia de empleado
+            cursor.execute("SELECT COUNT(*) FROM Empleado WHERE EmpleadoID=?", (empleado_id,))
+            if cursor.fetchone()[0] == 0:
+                messagebox.showerror("Error", "El ID de empleado no existe.")
+                conn.close()
+                return
+
+            # Guardar los datos en la base de datos
+            cursor.execute('''
+                INSERT INTO Diagnostico (DiagnosticoID, MascotaID, Fecha, TipoServicio, EmpleadoID)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (id_diagnostico, mascota_id, fecha, tipo_servicio, empleado_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Diagnóstico registrado exitosamente")
+            # Limpiar formulario
+            self.nuevo_diagnostico()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al guardar el diagnóstico: {e}")
+
+# ***********************
+
+    def nuevo_factura(self):
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        lbl_id_factura = tb.Label(self.frame_right, text="ID Factura")
+        lbl_id_factura.grid(row=0, column=0, padx=10, pady=10)
+        self.id_factura = tk.StringVar(value=str(random.randint(1000, 9999)))
+        entry_id_factura = tb.Entry(self.frame_right, textvariable=self.id_factura, state='readonly')
+        entry_id_factura.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_diagnostico_id = tb.Label(self.frame_right, text="ID Diagnóstico")
+        lbl_diagnostico_id.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_diagnostico_id = tb.Entry(self.frame_right)
+        self.entry_diagnostico_id.grid(row=1, column=1, padx=10, pady=10)
+
+        lbl_descripcion_servicio = tb.Label(self.frame_right, text="Descripción del Servicio")
+        lbl_descripcion_servicio.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_descripcion_servicio = tb.Entry(self.frame_right)
+        self.entry_descripcion_servicio.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_costo_servicio = tb.Label(self.frame_right, text="Costo del Servicio")
+        lbl_costo_servicio.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_costo_servicio = tb.Entry(self.frame_right)
+        self.entry_costo_servicio.grid(row=3, column=1, padx=10, pady=10)
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar', bootstyle="success", command=self.guardar_factura)
+        btn_guardar.grid(row=4, column=0, columnspan=2, pady=10)
+
+    def guardar_factura(self):
+        # Obtener los datos del formulario
+        id_factura = self.id_factura.get()
+        diagnostico_id = self.entry_diagnostico_id.get()
+        descripcion_servicio = self.entry_descripcion_servicio.get()
+        costo_servicio = self.entry_costo_servicio.get()
+
+        # Verificar si el ID de diagnóstico existe
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            
+            # Verificar existencia de diagnóstico
+            cursor.execute("SELECT COUNT(*) FROM Diagnostico WHERE DiagnosticoID=?", (diagnostico_id,))
+            if cursor.fetchone()[0] == 0:
+                messagebox.showerror("Error", "El ID de diagnóstico no existe.")
+                conn.close()
+                return
+
+            # Guardar los datos en la base de datos
+            cursor.execute('''
+                INSERT INTO Factura (FacturaID, DiagnosticoID, DescripcionDelServicio, CostoDelServicio)
+                VALUES (?, ?, ?, ?)
+            ''', (id_factura, diagnostico_id, descripcion_servicio, costo_servicio))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Factura registrada exitosamente")
+            # Limpiar formulario
+            self.nuevo_factura()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al guardar la factura: {e}")
 
 
 #     def show_new_product_form(self):
