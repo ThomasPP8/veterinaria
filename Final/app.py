@@ -227,7 +227,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_nueva_factura = tb.Button(self.lblframe_botones_listfac, text='Nueva', width=15, bootstyle="success", command=self.nuevo_factura)
         btn_nueva_factura.grid(row=0, column=0, padx=5, pady=5)
-        btn_modificar_factura = tb.Button(self.lblframe_botones_listfac, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_factura = tb.Button(self.lblframe_botones_listfac, text='Modificar', width=15, bootstyle="warning", command=self.modificar_factura)
         btn_modificar_factura.grid(row=0, column=1, padx=5, pady=5)
         btn_eliminar_factura = tb.Button(self.lblframe_botones_listfac, text='Eliminar', width=15, bootstyle="danger")
         btn_eliminar_factura.grid(row=0, column=2, padx=5, pady=5)
@@ -275,7 +275,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_nuevo_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Nuevo', width=15, bootstyle="success", command=self.nuevo_diagnostico)
         btn_nuevo_diagnostico.grid(row=0, column=0, padx=5, pady=5)
-        btn_modificar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Modificar', width=15, bootstyle="warning", command=self.modificar_diagnostico)
         btn_modificar_diagnostico.grid(row=0, column=1, padx=5, pady=5)
         btn_eliminar_diagnostico = tb.Button(self.lblframe_botones_listdiag, text='Eliminar', width=15, bootstyle="danger")
         btn_eliminar_diagnostico.grid(row=0, column=2, padx=5, pady=5)
@@ -1159,7 +1159,164 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al modificar el empleado: {e}")
 
+# ============
 
+    def modificar_diagnostico(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_diagnosticos.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un diagnóstico para modificar")
+            return
+
+        # Obtener los datos del diagnóstico seleccionado
+        item = self.tree_lista_diagnosticos.item(selected_item)
+        diagnostico_id = item['values'][0]
+
+        # Obtener los datos del diagnóstico desde la base de datos
+        conn = sql.connect("DataBase.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Diagnostico WHERE DiagnosticoID=?", (diagnostico_id,))
+        diagnostico = cursor.fetchone()
+        conn.close()
+
+        if not diagnostico:
+            messagebox.showerror("Error", "No se encontró el diagnóstico")
+            return
+
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        self.diagnostico_id = diagnostico[0]
+
+        lbl_mascota_id = tb.Label(self.frame_right, text="ID Mascota")
+        lbl_mascota_id.grid(row=0, column=0, padx=10, pady=10)
+        self.entry_mascota_id = tb.Entry(self.frame_right)
+        self.entry_mascota_id.grid(row=0, column=1, padx=10, pady=10)
+        self.entry_mascota_id.insert(0, diagnostico[1])
+
+        lbl_fecha = tb.Label(self.frame_right, text="Fecha")
+        lbl_fecha.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_fecha = tb.Entry(self.frame_right)
+        self.entry_fecha.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_fecha.insert(0, diagnostico[2])
+
+        lbl_tipo_servicio = tb.Label(self.frame_right, text="Tipo de Servicio")
+        lbl_tipo_servicio.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_tipo_servicio = tb.Entry(self.frame_right)
+        self.entry_tipo_servicio.grid(row=2, column=1, padx=10, pady=10)
+        self.entry_tipo_servicio.insert(0, diagnostico[3])
+
+        lbl_empleado_id = tb.Label(self.frame_right, text="ID Empleado")
+        lbl_empleado_id.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_empleado_id = tb.Entry(self.frame_right)
+        self.entry_empleado_id.grid(row=3, column=1, padx=10, pady=10)
+        self.entry_empleado_id.insert(0, diagnostico[4])
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar Cambios', bootstyle="success", command=self.guardar_cambios_diagnostico)
+        btn_guardar.grid(row=4, column=0, columnspan=2, pady=10)
+
+    def guardar_cambios_diagnostico(self):
+        # Obtener los datos del formulario
+        mascota_id = self.entry_mascota_id.get()
+        fecha = self.entry_fecha.get()
+        tipo_servicio = self.entry_tipo_servicio.get()
+        empleado_id = self.entry_empleado_id.get()
+
+        # Actualizar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Diagnostico
+                SET MascotaID = ?, Fecha = ?, TipoServicio = ?, EmpleadoID = ?
+                WHERE DiagnosticoID = ?
+            ''', (mascota_id, fecha, tipo_servicio, empleado_id, self.diagnostico_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Diagnóstico modificado exitosamente")
+            # Actualizar la vista de la lista de diagnósticos
+            self.mostrar_diagnosticos()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al modificar el diagnóstico: {e}")
+
+# ===========
+
+    def modificar_factura(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_facturas.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona una factura para modificar")
+            return
+
+        # Obtener los datos de la factura seleccionada
+        item = self.tree_lista_facturas.item(selected_item)
+        factura_id = item['values'][0]
+
+        # Obtener los datos de la factura desde la base de datos
+        conn = sql.connect("DataBase.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Factura WHERE FacturaID=?", (factura_id,))
+        factura = cursor.fetchone()
+        conn.close()
+
+        if not factura:
+            messagebox.showerror("Error", "No se encontró la factura")
+            return
+
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        self.factura_id = factura[0]
+
+        lbl_diagnostico_id = tb.Label(self.frame_right, text="ID Diagnóstico")
+        lbl_diagnostico_id.grid(row=0, column=0, padx=10, pady=10)
+        self.entry_diagnostico_id = tb.Entry(self.frame_right)
+        self.entry_diagnostico_id.grid(row=0, column=1, padx=10, pady=10)
+        self.entry_diagnostico_id.insert(0, factura[1])
+
+        lbl_descripcion_servicio = tb.Label(self.frame_right, text="Descripción del Servicio")
+        lbl_descripcion_servicio.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_descripcion_servicio = tb.Entry(self.frame_right)
+        self.entry_descripcion_servicio.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_descripcion_servicio.insert(0, factura[2])
+
+        lbl_costo_servicio = tb.Label(self.frame_right, text="Costo del Servicio")
+        lbl_costo_servicio.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_costo_servicio = tb.Entry(self.frame_right)
+        self.entry_costo_servicio.grid(row=2, column=1, padx=10, pady=10)
+        self.entry_costo_servicio.insert(0, factura[3])
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar Cambios', bootstyle="success", command=self.guardar_cambios_factura)
+        btn_guardar.grid(row=3, column=0, columnspan=2, pady=10)
+
+    def guardar_cambios_factura(self):
+        # Obtener los datos del formulario
+        diagnostico_id = self.entry_diagnostico_id.get()
+        descripcion_servicio = self.entry_descripcion_servicio.get()
+        costo_servicio = self.entry_costo_servicio.get()
+
+        # Actualizar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Factura
+                SET DiagnosticoID = ?, DescripcionDelServicio = ?, CostoDelServicio = ?
+                WHERE FacturaID = ?
+            ''', (diagnostico_id, descripcion_servicio, costo_servicio, self.factura_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Factura modificada exitosamente")
+            # Actualizar la vista de la lista de facturas
+            self.mostrar_facturas()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al modificar la factura: {e}")
 
 
 # # ==================FUNCIONES ELIMINAR DATOS=====================
