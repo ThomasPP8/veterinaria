@@ -73,7 +73,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_nuevo_cliente=tb.Button(self.lblframe_botones_listclient,text='Nuevo',width=15,bootstyle="success", command=self.nuevo_cliente)
         btn_nuevo_cliente.grid(row=0,column=0,padx=5,pady=5)
-        btn_modificar_cliente=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning")
+        btn_modificar_cliente=tb.Button(self.lblframe_botones_listclient,text='Modificar',width=15,bootstyle="warning", command=self.modificar_cliente)
         btn_modificar_cliente.grid(row=0,column=1,padx=5,pady=5)
         btn_eliminar_cliente=tb.Button(self.lblframe_botones_listclient,text='Eliminar',width=15,bootstyle="danger")
         btn_eliminar_cliente.grid(row=0,column=2,padx=5,pady=5)
@@ -123,7 +123,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_nueva_mascota = tb.Button(self.lblframe_botones_listpet, text='Nueva', width=15, bootstyle="success", command=self.nuevo_mascota)
         btn_nueva_mascota.grid(row=0, column=0, padx=5, pady=5)
-        btn_modificar_mascota = tb.Button(self.lblframe_botones_listpet, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_mascota = tb.Button(self.lblframe_botones_listpet, text='Modificar', width=15, bootstyle="warning", command=self.modificar_mascota)
         btn_modificar_mascota.grid(row=0, column=1, padx=5, pady=5)
         btn_eliminar_mascota = tb.Button(self.lblframe_botones_listpet, text='Eliminar', width=15, bootstyle="danger")
         btn_eliminar_mascota.grid(row=0, column=2, padx=5, pady=5)
@@ -174,7 +174,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         btn_nuevo_empleado = tb.Button(self.lblframe_botones_listemp, text='Nuevo', width=15, bootstyle="success", command=self.nuevo_empleado)
         btn_nuevo_empleado.grid(row=0, column=0, padx=5, pady=5)
-        btn_modificar_empleado = tb.Button(self.lblframe_botones_listemp, text='Modificar', width=15, bootstyle="warning")
+        btn_modificar_empleado = tb.Button(self.lblframe_botones_listemp, text='Modificar', width=15, bootstyle="warning", command=self.modificar_empleado)
         btn_modificar_empleado.grid(row=0, column=1, padx=5, pady=5)
         btn_eliminar_empleado = tb.Button(self.lblframe_botones_listemp, text='Eliminar', width=15, bootstyle="danger")
         btn_eliminar_empleado.grid(row=0, column=2, padx=5, pady=5)
@@ -845,253 +845,327 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al guardar la factura: {e}")
 
-
-#     def show_new_product_form(self):
-#         # Limpiar el frame derecho
-#         for widget in self.frame_right.winfo_children():
-#             widget.destroy()
-
-#         # Campos del formulario
-#         Label(self.frame_right, text="Nombre").grid(row=0, column=0, padx=10, pady=10)
-#         name_entry = Entry(self.frame_right)
-#         name_entry.grid(row=0, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="Descripción").grid(row=1, column=0, padx=10, pady=10)
-#         description_entry = Entry(self.frame_right)
-#         description_entry.grid(row=1, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="Precio").grid(row=2, column=0, padx=10, pady=10)
-#         price_entry = Entry(self.frame_right)
-#         price_entry.grid(row=2, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="Stock").grid(row=3, column=0, padx=10, pady=10)
-#         stock_entry = Entry(self.frame_right)
-#         stock_entry.grid(row=3, column=1, padx=10, pady=10)
-        
-#         # Botón para guardar el nuevo producto
-#         def save_product():
-#             name = name_entry.get()
-#             description = description_entry.get()
-#             price = price_entry.get()
-#             stock = stock_entry.get()
-            
-#             # Validaciones
-#             if not name:
-#                 messagebox.showerror("Error", "El nombre es obligatorio")
-#                 return
-#             if not description:
-#                 messagebox.showerror("Error", "La descripción es obligatoria")
-#                 return
-#             try:
-#                 price = float(price)
-#             except ValueError:
-#                 messagebox.showerror("Error", "El precio debe ser un número válido")
-#                 return
-#             try:
-#                 stock = int(stock)
-#             except ValueError:
-#                 messagebox.showerror("Error", "El stock debe ser un número entero")
-#                 return
-
-#             conn = sql.connect("DataBase.db")
-#             cursor = conn.cursor()
-            
-#             cursor.execute(
-#                 '''
-#                 INSERT INTO productos (nombre, descripcion, precio, stock)
-#                 VALUES (?, ?, ?, ?)
-#                 ''', (name, description, price, stock)
-#             )
-            
-#             conn.commit()
-#             conn.close()
-            
-#             messagebox.showinfo("Información", "Producto agregado exitosamente")
-#             self.show_new_product_form()  # Limpiar formulario después de agregar
-        
-#         Button(self.frame_right, text="Guardar", command=save_product).grid(row=4, column=0, columnspan=2, pady=20)
-
-#     def show_new_sale_form(self):
-#         # Limpiar el frame derecho
-#         for widget in self.frame_right.winfo_children():
-#             widget.destroy()
-
-#         # Campos del formulario
-#         Label(self.frame_right, text="ID Cliente").grid(row=0, column=0, padx=10, pady=10)
-#         id_cliente_entry = Entry(self.frame_right)
-#         id_cliente_entry.grid(row=0, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="ID Producto").grid(row=1, column=0, padx=10, pady=10)
-#         id_producto_entry = Entry(self.frame_right)
-#         id_producto_entry.grid(row=1, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="Cantidad").grid(row=2, column=0, padx=10, pady=10)
-#         cantidad_entry = Entry(self.frame_right)
-#         cantidad_entry.grid(row=2, column=1, padx=10, pady=10)
-        
-#         Label(self.frame_right, text="Fecha (YYYY-MM-DD)").grid(row=3, column=0, padx=10, pady=10)
-#         fecha_entry = Entry(self.frame_right)
-#         fecha_entry.grid(row=3, column=1, padx=10, pady=10)
-        
-#         # Botón para guardar la nueva venta
-#         def save_sale():
-#             id_cliente = id_cliente_entry.get()
-#             id_producto = id_producto_entry.get()
-#             cantidad = cantidad_entry.get()
-#             fecha = fecha_entry.get()
-            
-#             # Validaciones
-#             if not id_cliente:
-#                 messagebox.showerror("Error", "El ID del cliente es obligatorio")
-#                 return
-#             if not id_producto:
-#                 messagebox.showerror("Error", "El ID del producto es obligatorio")
-#                 return
-#             try:
-#                 cantidad = int(cantidad)
-#             except ValueError:
-#                 messagebox.showerror("Error", "La cantidad debe ser un número entero")
-#                 return
-#             if not fecha:
-#                 messagebox.showerror("Error", "La fecha es obligatoria")
-#                 return
-
-#             conn = sql.connect("DataBase.db")
-#             cursor = conn.cursor()
-            
-#             cursor.execute(
-#                 '''
-#                 INSERT INTO ventas (id_cliente, id_producto, cantidad, fecha_venta)
-#                 VALUES (?, ?, ?, ?)
-#                 ''', (id_cliente, id_producto, cantidad, fecha)
-#             )
-            
-#             conn.commit()
-#             conn.close()
-            
-#             messagebox.showinfo("Información", "Venta registrada exitosamente")
-#             self.show_new_sale_form()  # Limpiar formulario después de agregar
-        
-#         Button(self.frame_right, text="Guardar", command=save_sale).grid(row=4, column=0, columnspan=2, pady=20)
-
-
 # # ================FUNCIONES MODIFICAR DATOS=======================
-#     def show_modify_product_form(self):
-#         selected_item = self.tree_lista_productos.selection()
-#         if not selected_item:
-#             messagebox.showerror("Error", "Selecciona un producto para modificar")
-#             return
 
-#         item = self.tree_lista_productos.item(selected_item)
-#         product_id = item['values'][0]
-#         product_name = item['values'][1]
-#         product_description = item['values'][2]
-#         product_price = item['values'][3]
-#         product_stock = item['values'][4]
+    def modificar_cliente(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_clientes.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un cliente para modificar")
+            return
 
-#         # Limpiar el frame derecho
-#         for widget in self.frame_right.winfo_children():
-#             widget.destroy()
+        # Obtener los datos del cliente seleccionado
+        item = self.tree_lista_clientes.item(selected_item)
+        cliente_id = item['values'][0]
 
-#         # Campos del formulario con valores existentes
-#         Label(self.frame_right, text="Nombre").grid(row=0, column=0, padx=10, pady=10)
-#         name_entry = Entry(self.frame_right)
-#         name_entry.grid(row=0, column=1, padx=10, pady=10)
-#         name_entry.insert(0, product_name)
-        
-#         Label(self.frame_right, text="Descripción").grid(row=1, column=0, padx=10, pady=10)
-#         description_entry = Entry(self.frame_right)
-#         description_entry.grid(row=1, column=1, padx=10, pady=10)
-#         description_entry.insert(0, product_description)
-        
-#         Label(self.frame_right, text="Precio").grid(row=2, column=0, padx=10, pady=10)
-#         price_entry = Entry(self.frame_right)
-#         price_entry.grid(row=2, column=1, padx=10, pady=10)
-#         price_entry.insert(0, product_price)
-        
-#         Label(self.frame_right, text="Stock").grid(row=3, column=0, padx=10, pady=10)
-#         stock_entry = Entry(self.frame_right)
-#         stock_entry.grid(row=3, column=1, padx=10, pady=10)
-#         stock_entry.insert(0, product_stock)
-        
-#         # Botón para guardar los cambios del producto
-#         def save_modified_product():
-#             name = name_entry.get()
-#             description = description_entry.get()
-#             price = price_entry.get()
-#             stock = stock_entry.get()
-            
-#             # Validaciones
-#             if not name:
-#                 messagebox.showerror("Error", "El nombre es obligatorio")
-#                 return
-#             if not description:
-#                 messagebox.showerror("Error", "La descripción es obligatoria")
-#                 return
-#             try:
-#                 price = float(price)
-#             except ValueError:
-#                 messagebox.showerror("Error", "El precio debe ser un número válido")
-#                 return
-#             try:
-#                 stock = int(stock)
-#             except ValueError:
-#                 messagebox.showerror("Error", "El stock debe ser un número entero")
-#                 return
+        # Obtener los datos del cliente desde la base de datos
+        conn = sql.connect("DataBase.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Cliente WHERE ClienteID=?", (cliente_id,))
+        cliente = cursor.fetchone()
+        conn.close()
 
-#             conn = sql.connect("DataBase.db")
-#             cursor = conn.cursor()
-            
-#             cursor.execute(
-#                 '''
-#                 UPDATE productos
-#                 SET nombre = ?, descripcion = ?, precio = ?, stock = ?
-#                 WHERE id_producto = ?
-#                 ''', (name, description, price, stock, product_id)
-#             )
-            
-#             conn.commit()
-#             conn.close()
-            
-#             messagebox.showinfo("Información", "Producto modificado exitosamente")
-#             self.mostrar_productos()
-#             self.frame_right.destroy()  # Ocultar el formulario después de modificar
-        
-#         Button(self.frame_right, text="Guardar", command=save_modified_product).grid(row=4, column=0, columnspan=2, pady=20)
+        if not cliente:
+            messagebox.showerror("Error", "No se encontró el cliente")
+            return
+
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        self.cliente_id = cliente[0]
+
+        lbl_tipo_documento = tb.Label(self.frame_right, text="Tipo de Documento")
+        lbl_tipo_documento.grid(row=0, column=0, padx=10, pady=10)
+        self.tipo_documento = tk.StringVar(value=cliente[1])
+        cb_tipo_documento = tb.Combobox(self.frame_right, textvariable=self.tipo_documento)
+        cb_tipo_documento['values'] = ('CC', 'CE', 'PS', 'PEP', 'PPT')
+        cb_tipo_documento.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_documento = tb.Label(self.frame_right, text="Número de Documento")
+        lbl_documento.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_documento = tb.Entry(self.frame_right)
+        self.entry_documento.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_documento.insert(0, cliente[2])
+
+        lbl_tipo_persona = tb.Label(self.frame_right, text="Tipo de Persona")
+        lbl_tipo_persona.grid(row=2, column=0, padx=10, pady=10)
+        self.tipo_persona = tk.StringVar(value=cliente[3])
+        cb_tipo_persona = tb.Combobox(self.frame_right, textvariable=self.tipo_persona)
+        cb_tipo_persona['values'] = ('Natural', 'Jurídica')
+        cb_tipo_persona.grid(row=2, column=1, padx=10, pady=10)
+
+        lbl_nombre = tb.Label(self.frame_right, text="Nombre")
+        lbl_nombre.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_nombre = tb.Entry(self.frame_right)
+        self.entry_nombre.grid(row=3, column=1, padx=10, pady=10)
+        self.entry_nombre.insert(0, cliente[4])
+
+        lbl_telefono = tb.Label(self.frame_right, text="Teléfono")
+        lbl_telefono.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_telefono = tb.Entry(self.frame_right)
+        self.entry_telefono.grid(row=4, column=1, padx=10, pady=10)
+        self.entry_telefono.insert(0, cliente[5])
+
+        lbl_correo = tb.Label(self.frame_right, text="Correo")
+        lbl_correo.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_correo = tb.Entry(self.frame_right)
+        self.entry_correo.grid(row=5, column=1, padx=10, pady=10)
+        self.entry_correo.insert(0, cliente[6])
+
+        lbl_direccion = tb.Label(self.frame_right, text="Dirección")
+        lbl_direccion.grid(row=6, column=0, padx=10, pady=10)
+        self.entry_direccion = tb.Entry(self.frame_right)
+        self.entry_direccion.grid(row=6, column=1, padx=10, pady=10)
+        self.entry_direccion.insert(0, cliente[7])
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar Cambios', bootstyle="success", command=self.guardar_cambios_cliente)
+        btn_guardar.grid(row=7, column=0, columnspan=2, pady=10)
+
+    def guardar_cambios_cliente(self):
+        # Obtener los datos del formulario
+        tipo_documento = self.tipo_documento.get()
+        numero_documento = self.entry_documento.get()
+        tipo_persona = self.tipo_persona.get()
+        nombre = self.entry_nombre.get()
+        telefono = self.entry_telefono.get()
+        correo = self.entry_correo.get()
+        direccion = self.entry_direccion.get()
+
+        # Actualizar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Cliente
+                SET TipoDocumento = ?, NumeroDocumento = ?, TipoPersona = ?, Nombre = ?, Telefono = ?, Correo = ?, DireccionCliente = ?
+                WHERE ClienteID = ?
+            ''', (tipo_documento, numero_documento, tipo_persona, nombre, telefono, correo, direccion, self.cliente_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Cliente modificado exitosamente")
+            # Actualizar la vista de la lista de clientes
+            self.mostrar_clientes()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al modificar el cliente: {e}")
+
+# =============
+
+    def modificar_mascota(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_mascotas.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona una mascota para modificar")
+            return
+
+        # Obtener los datos de la mascota seleccionada
+        item = self.tree_lista_mascotas.item(selected_item)
+        mascota_id = item['values'][0]
+
+        # Obtener los datos de la mascota desde la base de datos
+        conn = sql.connect("DataBase.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Mascota WHERE MascotaID=?", (mascota_id,))
+        mascota = cursor.fetchone()
+        conn.close()
+
+        if not mascota:
+            messagebox.showerror("Error", "No se encontró la mascota")
+            return
+
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        self.mascota_id = mascota[0]
+
+        lbl_codigo_mascota = tb.Label(self.frame_right, text="Código Mascota")
+        lbl_codigo_mascota.grid(row=0, column=0, padx=10, pady=10)
+        self.codigo_mascota = tk.StringVar(value=mascota[1])
+        entry_codigo_mascota = tb.Entry(self.frame_right, textvariable=self.codigo_mascota, state='readonly')
+        entry_codigo_mascota.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_raza = tb.Label(self.frame_right, text="Raza")
+        lbl_raza.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_raza = tb.Entry(self.frame_right)
+        self.entry_raza.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_raza.insert(0, mascota[2])
+
+        lbl_nombre = tb.Label(self.frame_right, text="Nombre")
+        lbl_nombre.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_nombre = tb.Entry(self.frame_right)
+        self.entry_nombre.grid(row=2, column=1, padx=10, pady=10)
+        self.entry_nombre.insert(0, mascota[3])
+
+        lbl_edad = tb.Label(self.frame_right, text="Edad")
+        lbl_edad.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_edad = tb.Entry(self.frame_right)
+        self.entry_edad.grid(row=3, column=1, padx=10, pady=10)
+        self.entry_edad.insert(0, mascota[4])
+
+        lbl_numero_identidad_dueno = tb.Label(self.frame_right, text="Número Identidad Dueño")
+        lbl_numero_identidad_dueno.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_numero_identidad_dueno = tb.Entry(self.frame_right)
+        self.entry_numero_identidad_dueno.grid(row=4, column=1, padx=10, pady=10)
+        self.entry_numero_identidad_dueno.insert(0, mascota[5])
+
+        lbl_descripcion = tb.Label(self.frame_right, text="Descripción")
+        lbl_descripcion.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_descripcion = tb.Entry(self.frame_right)
+        self.entry_descripcion.grid(row=5, column=1, padx=10, pady=10)
+        self.entry_descripcion.insert(0, mascota[6])
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar Cambios', bootstyle="success", command=self.guardar_cambios_mascota)
+        btn_guardar.grid(row=6, column=0, columnspan=2, pady=10)
+
+    def guardar_cambios_mascota(self):
+        # Obtener los datos del formulario
+        raza = self.entry_raza.get()
+        nombre = self.entry_nombre.get()
+        edad = self.entry_edad.get()
+        numero_identidad_dueno = self.entry_numero_identidad_dueno.get()
+        descripcion = self.entry_descripcion.get()
+
+        # Actualizar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Mascota
+                SET Raza = ?, Nombre = ?, Edad = ?, NumeroIdentidadDueno = ?, Descripcion = ?
+                WHERE MascotaID = ?
+            ''', (raza, nombre, edad, numero_identidad_dueno, descripcion, self.mascota_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Mascota modificada exitosamente")
+            # Actualizar la vista de la lista de mascotas
+            self.mostrar_mascotas()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al modificar la mascota: {e}")
+
+# =============
+
+    def modificar_empleado(self):
+        # Obtener la selección actual del Treeview
+        selected_item = self.tree_lista_empleados.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Selecciona un empleado para modificar")
+            return
+
+        # Obtener los datos del empleado seleccionado
+        item = self.tree_lista_empleados.item(selected_item)
+        empleado_id = item['values'][0]
+
+        # Obtener los datos del empleado desde la base de datos
+        conn = sql.connect("DataBase.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Empleado WHERE EmpleadoID=?", (empleado_id,))
+        empleado = cursor.fetchone()
+        conn.close()
+
+        if not empleado:
+            messagebox.showerror("Error", "No se encontró el empleado")
+            return
+
+        # Limpiar el frame derecho antes de agregar el formulario
+        for widget in self.frame_right.winfo_children():
+            widget.destroy()
+
+        # Etiquetas y campos de entrada del formulario
+        self.empleado_id = empleado[0]
+
+        lbl_tipo_documento = tb.Label(self.frame_right, text="Tipo de Documento")
+        lbl_tipo_documento.grid(row=0, column=0, padx=10, pady=10)
+        self.tipo_documento = tk.StringVar(value=empleado[1])
+        cb_tipo_documento = tb.Combobox(self.frame_right, textvariable=self.tipo_documento)
+        cb_tipo_documento['values'] = ('CC', 'CE', 'PS', 'PEP', 'PPT')
+        cb_tipo_documento.grid(row=0, column=1, padx=10, pady=10)
+
+        lbl_numero_documento = tb.Label(self.frame_right, text="Número de Documento")
+        lbl_numero_documento.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_numero_documento = tb.Entry(self.frame_right)
+        self.entry_numero_documento.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_numero_documento.insert(0, empleado[2])
+
+        lbl_direccion_vivienda = tb.Label(self.frame_right, text="Dirección de Vivienda")
+        lbl_direccion_vivienda.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_direccion_vivienda = tb.Entry(self.frame_right)
+        self.entry_direccion_vivienda.grid(row=2, column=1, padx=10, pady=10)
+        self.entry_direccion_vivienda.insert(0, empleado[3])
+
+        lbl_numero_telefono = tb.Label(self.frame_right, text="Número de Teléfono")
+        lbl_numero_telefono.grid(row=3, column=0, padx=10, pady=10)
+        self.entry_numero_telefono = tb.Entry(self.frame_right)
+        self.entry_numero_telefono.grid(row=3, column=1, padx=10, pady=10)
+        self.entry_numero_telefono.insert(0, empleado[4])
+
+        lbl_nombre_completo = tb.Label(self.frame_right, text="Nombre Completo")
+        lbl_nombre_completo.grid(row=4, column=0, padx=10, pady=10)
+        self.entry_nombre_completo = tb.Entry(self.frame_right)
+        self.entry_nombre_completo.grid(row=4, column=1, padx=10, pady=10)
+        self.entry_nombre_completo.insert(0, empleado[5])
+
+        lbl_correo_electronico = tb.Label(self.frame_right, text="Correo Electrónico")
+        lbl_correo_electronico.grid(row=5, column=0, padx=10, pady=10)
+        self.entry_correo_electronico = tb.Entry(self.frame_right)
+        self.entry_correo_electronico.grid(row=5, column=1, padx=10, pady=10)
+        self.entry_correo_electronico.insert(0, empleado[6])
+
+        lbl_fecha_contratacion = tb.Label(self.frame_right, text="Fecha de Contratación")
+        lbl_fecha_contratacion.grid(row=6, column=0, padx=10, pady=10)
+        self.entry_fecha_contratacion = tb.Entry(self.frame_right)
+        self.entry_fecha_contratacion.grid(row=6, column=1, padx=10, pady=10)
+        self.entry_fecha_contratacion.insert(0, empleado[7])
+
+        lbl_cargo_en_clinica = tb.Label(self.frame_right, text="Cargo en Clínica")
+        lbl_cargo_en_clinica.grid(row=7, column=0, padx=10, pady=10)
+        self.entry_cargo_en_clinica = tb.Entry(self.frame_right)
+        self.entry_cargo_en_clinica.grid(row=7, column=1, padx=10, pady=10)
+        self.entry_cargo_en_clinica.insert(0, empleado[8])
+
+        # Botón Guardar
+        btn_guardar = tb.Button(self.frame_right, text='Guardar Cambios', bootstyle="success", command=self.guardar_cambios_empleado)
+        btn_guardar.grid(row=8, column=0, columnspan=2, pady=10)
+
+    def guardar_cambios_empleado(self):
+        # Obtener los datos del formulario
+        tipo_documento = self.tipo_documento.get()
+        numero_documento = self.entry_numero_documento.get()
+        direccion_vivienda = self.entry_direccion_vivienda.get()
+        numero_telefono = self.entry_numero_telefono.get()
+        nombre_completo = self.entry_nombre_completo.get()
+        correo_electronico = self.entry_correo_electronico.get()
+        fecha_contratacion = self.entry_fecha_contratacion.get()
+        cargo_en_clinica = self.entry_cargo_en_clinica.get()
+
+        # Actualizar los datos en la base de datos
+        try:
+            conn = sql.connect("DataBase.db")
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE Empleado
+                SET TipoDocumento = ?, NumeroDocumento = ?, DireccionVivienda = ?, NumeroTelefono = ?, NombreCompleto = ?, CorreoElectronico = ?, FechaContratacion = ?, CargoEnClinica = ?
+                WHERE EmpleadoID = ?
+            ''', (tipo_documento, numero_documento, direccion_vivienda, numero_telefono, nombre_completo, correo_electronico, fecha_contratacion, cargo_en_clinica, self.empleado_id))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Información", "Empleado modificado exitosamente")
+            # Actualizar la vista de la lista de empleados
+            self.mostrar_empleados()
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al modificar el empleado: {e}")
+
+
+
 
 # # ==================FUNCIONES ELIMINAR DATOS=====================
-    # def delete_product(self):
-    #     selected_item = self.tree_lista_productos.selection()
-    #     if not selected_item:
-    #         messagebox.showerror("Error", "Selecciona un producto para eliminar")
-    #         return
 
-    #     item = self.tree_lista_productos.item(selected_item)
-    #     product_id = item['values'][0]
 
-    #     # Confirmación antes de eliminar
-    #     confirm = messagebox.askyesno("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este producto?")
-    #     if not confirm:
-    #         return
 
-    #     try:
-    #         conn = sql.connect("DataBase.db")
-    #         cursor = conn.cursor()
-            
-    #         cursor.execute(
-    #             '''
-    #             DELETE FROM productos
-    #             WHERE id_producto = ?
-    #             ''', (product_id,)
-    #         )
-            
-    #         conn.commit()
-    #         conn.close()
-            
-    #         messagebox.showinfo("Información", "Producto eliminado exitosamente")
-    #         self.mostrar_productos()
-    #     except Exception as e:
-    #         messagebox.showerror("Error", f"Ocurrió un error al eliminar el producto: {e}")
 
 
 #Gestiones DB
