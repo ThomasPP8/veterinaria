@@ -543,6 +543,9 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         for widget in self.frame_right.winfo_children():
             widget.destroy()
 
+        # Generar código de mascota aleatorio
+        codigo_mascota = f"M{random.randint(100, 999)}"
+
         # Etiquetas y campos de entrada del formulario
         lbl_id_mascota = tb.Label(self.frame_right, text="ID Mascota")
         lbl_id_mascota.grid(row=0, column=0, padx=10, pady=10)
@@ -552,8 +555,9 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
         lbl_codigo_mascota = tb.Label(self.frame_right, text="Código Mascota")
         lbl_codigo_mascota.grid(row=1, column=0, padx=10, pady=10)
-        self.entry_codigo_mascota = tb.Entry(self.frame_right)
-        self.entry_codigo_mascota.grid(row=1, column=1, padx=10, pady=10)
+        self.entry_codigo_mascota = tk.StringVar(value=codigo_mascota)
+        entry_codigo_mascota = tb.Entry(self.frame_right, textvariable=self.entry_codigo_mascota, state='readonly')
+        entry_codigo_mascota.grid(row=1, column=1, padx=10, pady=10)
 
         lbl_raza = tb.Label(self.frame_right, text="Raza")
         lbl_raza.grid(row=2, column=0, padx=10, pady=10)
