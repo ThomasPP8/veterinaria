@@ -74,16 +74,18 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.frame_right = Frame(self.scrollable_frame, width=400)
         self.frame_right.grid(row=0, column=2, sticky=NSEW)
 
-        btn_productos = ttk.Button(self.frame_left, text='Clientes', width=15, command=self.ventana_lista_clientes)
+        btn_productos = ttk.Button(self.frame_left, text='Reiniciar', width=15, command=self.reset, bootstyle="warning-outline")
         btn_productos.grid(row=0, column=0, padx=10, pady=10)
+        btn_productos = ttk.Button(self.frame_left, text='Clientes', width=15, command=self.ventana_lista_clientes)
+        btn_productos.grid(row=1, column=0, padx=10, pady=10)
         btn_ventas = ttk.Button(self.frame_left, text='Mascotas', width=15, command=self.ventana_lista_mascotas)
-        btn_ventas.grid(row=1, column=0, padx=10, pady=10)
+        btn_ventas.grid(row=2, column=0, padx=10, pady=10)
         btn_clientes = ttk.Button(self.frame_left, text='Empleados', width=15, command=self.ventana_lista_empleados)
-        btn_clientes.grid(row=2, column=0, padx=10, pady=10)
+        btn_clientes.grid(row=3, column=0, padx=10, pady=10)
         btn_compras = ttk.Button(self.frame_left, text='Diagnosticos', width=15, command=self.ventana_lista_diagnosticos)
-        btn_compras.grid(row=3, column=0, padx=10, pady=10)
+        btn_compras.grid(row=4, column=0, padx=10, pady=10)
         btn_usuarios = ttk.Button(self.frame_left, text='Facturas', width=15, command=self.ventana_lista_facturas)
-        btn_usuarios.grid(row=4, column=0, padx=10, pady=10)
+        btn_usuarios.grid(row=5, column=0, padx=10, pady=10)
 
         # lbl2=Label(self.frame_center,text='Aqui Pondremos las ventanas que creemos')
         # lbl2.grid(row=0,column=0,padx=10,pady=10)
@@ -95,9 +97,13 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.frame_login.pack_forget()#Ocultar la ventana de Login
         self.ventana_menu()#abrir ventana de menu
 
+    def reset(self):
+        self.frame_menu.pack_forget()  # Ocultar la ventana del menú actual
+        self.ventana_menu()  # Volver a abrir la ventana del menú
 
 #VENTANAS ********************************
     def ventana_lista_clientes(self):
+        self.reset()
         self.frame_lista_clientes=Frame(self.frame_center)
         self.frame_lista_clientes.grid(row=0,column=0,columnspan=2,sticky=NSEW)
 
@@ -148,6 +154,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.mostrar_clientes()
     
     def ventana_lista_mascotas(self):
+        self.reset()
         self.frame_lista_mascotas = Frame(self.frame_center)
         self.frame_lista_mascotas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
 
@@ -199,6 +206,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.mostrar_mascotas()
 
     def ventana_lista_empleados(self):
+        self.reset()
         self.frame_lista_empleados = Frame(self.frame_center)
         self.frame_lista_empleados.grid(row=0, column=0, columnspan=2, sticky=NSEW)
 
@@ -252,6 +260,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.mostrar_empleados()
 
     def ventana_lista_facturas(self):
+        self.reset()
         self.frame_lista_facturas = Frame(self.frame_center)
         self.frame_lista_facturas.grid(row=0, column=0, columnspan=2, sticky=NSEW)
 
@@ -300,6 +309,7 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         self.mostrar_facturas()
 
     def ventana_lista_diagnosticos(self):
+        self.reset()
         self.frame_lista_diagnosticos = Frame(self.frame_center)
         self.frame_lista_diagnosticos.grid(row=0, column=0, columnspan=2, sticky=NSEW)
 
@@ -1505,7 +1515,6 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
 
 #Gestiones DB
-    
 
 # ******************************** Inicio ********************
 def main():
