@@ -163,3 +163,48 @@ def insert_values():
     
     conn.commit()
     conn.close()
+
+
+========================================
+
+def createDB():
+    conn = sql.connect("acceso.db")
+    conn.commit()
+    conn.close()
+
+def createTable():
+    conn = sql.connect("acceso.db")
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS usuarios (
+            usuario TEXT NOT NULL PRIMARY KEY,
+            clave TEXT NOT NULL,
+            rol TEXT NOT NULL
+        );
+        """
+    )
+    
+    conn.commit()
+    conn.close()
+
+def insert_values():
+    conn = sql.connect("acceso.db")
+    cursor = conn.cursor()
+    
+    # Insertar valores en la tabla usuarios
+    usuarios = [
+        ("admin", "admin123", "Administrator"),
+        ("usuario", "usuario123", "User")
+    ]
+    
+    cursor.executemany(
+        """
+        INSERT INTO usuarios (usuario, clave, rol)
+        VALUES (?, ?, ?)
+        """, usuarios
+    )
+    
+    conn.commit()
+    conn.close()
