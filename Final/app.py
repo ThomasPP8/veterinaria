@@ -2,8 +2,10 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk, messagebox
 import ttkbootstrap as tb #Acceder estilos de bootstrap
+from ttkbootstrap import Canvas, Scrollbar
 import sqlite3 as sql #Libreria de SQLittle
 import random
+
 
 class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
     def __init__(self):
@@ -46,24 +48,42 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
         
     #VENTANA Menu
     def ventana_menu(self):
-        self.frame_left=Frame(self,width=200)
-        self.frame_left.grid(row=0,column=0,sticky=NSEW)
-        self.frame_center=Frame(self)
-        self.frame_center.grid(row=0,column=1,sticky=NSEW)
-        self.frame_right=Frame(self,width=400)
-        self.frame_right.grid(row=0,column=2,sticky=NSEW)
+        self.frame_menu = Frame(self)
+        self.frame_menu.pack(fill=BOTH, expand=True)
 
-        btn_productos=ttk.Button(self.frame_left,text='Clientes',width=15, command=self.ventana_lista_clientes)
-        btn_productos.grid(row=0,column=0,padx=10,pady=10)
-        btn_ventas=ttk.Button(self.frame_left,text='Mascotas',width=15,command=self.ventana_lista_mascotas)
-        btn_ventas.grid(row=1,column=0,padx=10,pady=10)
-        btn_clientes=ttk.Button(self.frame_left,text='Empleados',width=15, command=self.ventana_lista_empleados)
-        btn_clientes.grid(row=2,column=0,padx=10,pady=10)
-        btn_compras=ttk.Button(self.frame_left,text='Diagnosticos',width=15, command=self.ventana_lista_diagnosticos)
-        btn_compras.grid(row=3,column=0,padx=10,pady=10)
-        btn_usuarios=ttk.Button(self.frame_left,text='Facturas',width=15,command=self.ventana_lista_facturas)
-        btn_usuarios.grid(row=4,column=0,padx=10,pady=10)
+        canvas = Canvas(self.frame_menu)
+        scrollbar_x = Scrollbar(self.frame_menu, orient=HORIZONTAL, command=canvas.xview, bootstyle="round-success")
+        scrollbar_x.pack(side=BOTTOM, fill=X)
 
+        self.scrollable_frame = Frame(canvas)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(xscrollcommand=scrollbar_x.set)
+        canvas.pack(side=LEFT, fill=BOTH, expand=True)
+
+        self.frame_left = Frame(self.scrollable_frame, width=200)
+        self.frame_left.grid(row=0, column=0, sticky=NSEW)
+        self.frame_center = Frame(self.scrollable_frame)
+        self.frame_center.grid(row=0, column=1, sticky=NSEW)
+        self.frame_right = Frame(self.scrollable_frame, width=400)
+        self.frame_right.grid(row=0, column=2, sticky=NSEW)
+
+        btn_productos = ttk.Button(self.frame_left, text='Clientes', width=15, command=self.ventana_lista_clientes)
+        btn_productos.grid(row=0, column=0, padx=10, pady=10)
+        btn_ventas = ttk.Button(self.frame_left, text='Mascotas', width=15, command=self.ventana_lista_mascotas)
+        btn_ventas.grid(row=1, column=0, padx=10, pady=10)
+        btn_clientes = ttk.Button(self.frame_left, text='Empleados', width=15, command=self.ventana_lista_empleados)
+        btn_clientes.grid(row=2, column=0, padx=10, pady=10)
+        btn_compras = ttk.Button(self.frame_left, text='Diagnosticos', width=15, command=self.ventana_lista_diagnosticos)
+        btn_compras.grid(row=3, column=0, padx=10, pady=10)
+        btn_usuarios = ttk.Button(self.frame_left, text='Facturas', width=15, command=self.ventana_lista_facturas)
+        btn_usuarios.grid(row=4, column=0, padx=10, pady=10)
 
         # lbl2=Label(self.frame_center,text='Aqui Pondremos las ventanas que creemos')
         # lbl2.grid(row=0,column=0,padx=10,pady=10)
