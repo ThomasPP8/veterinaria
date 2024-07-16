@@ -14,22 +14,35 @@ class Ventana(tb.Window): #Aqui cambia el "TK" por "tb.Window"
 
     #VENTANA Log in
     def ventana_login(self):
-        self.frame_login=Frame(self)
+        self.frame_login = Frame(self)
         self.frame_login.pack()
 
-        self.lblframe__login=LabelFrame(self.frame_login, text='Acceso') #Panel e input Acceso
-        self.lblframe__login.pack(padx=10,pady=10)
+        self.lblframe_login = LabelFrame(self.frame_login, text='Acceso')  # Panel e input Acceso
+        self.lblframe_login.pack(padx=10, pady=10)
 
-        lbltitulo=Label(self.lblframe__login,text='inicio de sesion', font=('Arial',18)) #Etiqueta titulo
-        lbltitulo.pack(padx=10,pady=35)
+        lbltitulo = Label(self.lblframe_login, text='Inicio de sesión', font=('Arial', 18))  # Etiqueta título
+        lbltitulo.pack(padx=10, pady=35)
 
-        txt_usuario=ttk.Entry(self.lblframe__login, width=40, justify=CENTER) #Entry para campo de texto
-        txt_usuario.pack(padx=10,pady=10)
-        txt_clave=ttk.Entry(self.lblframe__login,width=40, justify=CENTER)
-        txt_clave.pack(padx=10,pady=10)
-        txt_clave.configure(show='*') #Censurar clave
-        btn_acceso=ttk.Button(self.lblframe__login,text='Log in',command=self.logueo)
-        btn_acceso.pack(padx=10,pady=10)
+        self.txt_usuario = ttk.Entry(self.lblframe_login, width=40, justify=CENTER)  # Entry para campo de texto
+        self.txt_usuario.pack(padx=10, pady=10)
+
+        self.txt_clave = ttk.Entry(self.lblframe_login, width=40, justify=CENTER)
+        self.txt_clave.pack(padx=10, pady=10)
+        self.txt_clave.configure(show='*')  # Censurar clave
+
+        btn_acceso = ttk.Button(self.lblframe_login, text='Log in', command=self.guardar_valores)
+        btn_acceso.pack(padx=10, pady=10)
+
+    def guardar_valores(self):
+        usuario = self.txt_usuario.get()
+        clave = self.txt_clave.get()
+
+        if usuario == "admin":
+            if clave == "admin123":
+                self.logueo()
+        else:
+            messagebox.showerror("Error", "Usuario o clave incorrectos")
+
         
     #VENTANA Menu
     def ventana_menu(self):
